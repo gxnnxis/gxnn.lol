@@ -39,7 +39,7 @@ body::after {
     content: "";
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle, rgba(140,0,255,0.15), transparent 70%);
+    background: radial-gradient(circle at center 40%, rgba(140,0,255,0.18), transparent 75%);
     z-index: -1;
 }
 
@@ -63,13 +63,12 @@ body::after {
     pointer-events: none;
 }
 
-/* WRAPPER (card + music) */
+/* WRAPPER */
 .wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 25px;
-
     opacity: 0;
     transform: translateY(20px);
     transition: 0.8s;
@@ -82,19 +81,16 @@ body::after {
 
 /* CARD */
 .card {
-    width: 600px;              /* slightly wider */
-    height: 300px;             /* ratio 1:2 (height:width) */
+    width: 90%;
+    max-width: 600px;
+    height: 300px;
     padding: 35px;
     border-radius: 25px;
-
     background: rgba(20, 20, 20, 0.6);
-    backdrop-filter: blur(1px); /* 5% blur ~ very subtle */
-
-    border: 2px solid rgba(255,255,255,0.3); /* bold border */
+    border: 2px solid rgba(255,255,255,0.3);
     box-shadow: 
         0 0 50px rgba(140, 0, 255, 0.3),
         inset 0 0 15px rgba(255,255,255,0.03);
-
     display: flex;
     flex-direction: column;
     gap: 25px;
@@ -142,7 +138,7 @@ body::after {
 }
 
 .icons svg {
-    width: 50px;       /* bigger icons */
+    width: 50px;
     height: 50px;
     fill: white;
     transition: 0.3s;
@@ -163,15 +159,13 @@ body::after {
 
 /* MUSIC BAR */
 .music-bar {
-    width: 600px;          /* match card width */
-    height: 60px;          /* slightly taller */
+    width: 90%;
+    max-width: 600px;
+    height: 60px;
     padding: 14px 20px;
     border-radius: 20px;
-
     background: rgba(20,20,20,0.65);
-    backdrop-filter: blur(1px); /* subtle blur */
     border: 2px solid rgba(255,255,255,0.3);
-
     display: flex;
     align-items: center;
     gap: 16px;
@@ -237,17 +231,21 @@ body::after {
         <div class="handle">@gxnnloser</div>
 
         <div class="icons">
+
+            <!-- TikTok (updated) -->
             <a href="#">
                 <svg viewBox="0 0 24 24">
-                    <path d="M20 4a16 16 0 0 0-4-1l-.2.4a15 15 0 0 0-7.6 0L8 3A16 16 0 0 0 4 4C2 7 1.5 10 2 13c2 1.5 4 2 6 2l.5-.7c-1-.3-2-.7-2.5-1.2l.5-.4c2 1 4 1 6 0l.5.4c-.5.5-1.5.9-2.5 1.2l.5.7c2 0 4-.5 6-2 .5-3-.5-6-2-9z"/>
+                    <path fill="white" d="M12.75 2c.41 2.07 1.88 3.7 3.75 4.22v3.03c-1.38-.03-2.69-.45-3.75-1.17v6.9a5.02 5.02 0 1 1-5-5.02c.34 0 .67.03 1 .1v3.12a2 2 0 1 0 2 2V2h2z"/>
                 </svg>
             </a>
 
+            <!-- Discord (updated) -->
             <a href="#">
                 <svg viewBox="0 0 24 24">
-                    <path d="M12 2v14a4 4 0 1 1-4-4h1v3h-1a1 1 0 1 0 1 1V2h3a5 5 0 0 0 5 5v3a8 8 0 0 1-5-2z"/>
+                    <path fill="white" d="M20 4.5a19.8 19.8 0 0 0-4.9-1.5l-.24.48a17.3 17.3 0 0 1 4.1 1.7 17.6 17.6 0 0 0-15.84 0 17.3 17.3 0 0 1 4.1-1.7L7 3A19.8 19.8 0 0 0 2 4.5C.5 8 0 11.4.2 14.8c2.1 1.6 4.4 2.6 6.8 3l.54-1.1c-1.2-.4-2.3-1-3.3-1.8l.8-.6c2.4 1.4 5.1 2.1 7.9 2.1s5.5-.7 7.9-2.1l.8.6c-1 .8-2.1 1.4-3.3 1.8l.54 1.1c2.4-.4 4.7-1.4 6.8-3 .2-3.4-.3-6.8-1.8-10.3zM9 13.5c-.9 0-1.7-.8-1.7-1.7S8.1 10 9 10s1.7.8 1.7 1.7-.8 1.8-1.7 1.8zm6 0c-.9 0-1.7-.8-1.7-1.7S14.1 10 15 10s1.7.8 1.7 1.7-.8 1.8-1.7 1.8z"/>
                 </svg>
             </a>
+
         </div>
 
         <div class="stats">
@@ -304,16 +302,14 @@ music.addEventListener("timeupdate", () => {
 });
 
 progress.addEventListener("input", () => {
+    if (!music.duration) return;
     music.currentTime = (progress.value / 100) * music.duration;
 });
 
 overlay.addEventListener("click", async () => {
-    try {
-        await music.play();
-    } catch {}
-
+    try { await music.play(); } catch {}
     overlay.classList.add("hidden");
-    wrapper.classList.add("show");
+    setTimeout(() => wrapper.classList.add("show"), 150);
 });
 </script>
 
