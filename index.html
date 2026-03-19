@@ -63,13 +63,12 @@ body::after {
     pointer-events: none;
 }
 
-/* WRAPPER (card + music) */
+/* WRAPPER */
 .wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 25px;
-
     opacity: 0;
     transform: translateY(20px);
     transition: 0.8s;
@@ -98,6 +97,8 @@ body::after {
     display: flex;
     flex-direction: column;
     gap: 25px;
+
+    transition: transform 0.15s ease-out;
 }
 
 /* TOP */
@@ -159,14 +160,6 @@ body::after {
     filter: drop-shadow(0 0 15px rgba(200,0,255,0.9));
 }
 
-/* STATS */
-.stats {
-    display: flex;
-    justify-content: flex-start;
-    font-size: 16px;
-    opacity: 0.7;
-}
-
 /* MUSIC BAR */
 .music-bar {
     width: 600px;
@@ -181,6 +174,8 @@ body::after {
     display: flex;
     align-items: center;
     gap: 16px;
+
+    transition: transform 0.15s ease-out;
 }
 
 .music-left {
@@ -227,13 +222,13 @@ body::after {
 
 <body>
 
-<div id="enterOverlay">click to enter</div>
+<div id="enterOverlay">gxnnloser.</div>
 
 <img src="background.jpg" id="bg" alt="background image">
 
 <div class="wrapper" id="wrapper">
 
-    <div class="card">
+    <div class="card" id="card">
 
         <div class="top">
             <img src="avatar.jpg" class="avatar" alt="gxnnloser avatar">
@@ -243,20 +238,19 @@ body::after {
         <div class="handle">@gxnnloser</div>
 
         <div class="icons">
-            <!-- TikTok button -->
-            <a href="https://www.tiktok.com/gxnnloser" target="_blank" rel="noopener noreferrer">
+            <a href="https://tiktok.com/gxnnloser" target="_blank">
                 <img src="tiktok.webp" alt="TikTok">
             </a>
 
-            <!-- Discord button -->
-            <a href="https://discord.com/746117601289044050" target="_blank" rel="noopener noreferrer">
+            <a href="https://discord.com/user/746117601289044050" target="_blank">
                 <img src="discord.webp" alt="Discord">
             </a>
         </div>
+
     </div>
 
     <!-- MUSIC BAR -->
-    <div class="music-bar">
+    <div class="music-bar" id="musicBar">
         <audio id="music" src="song.mp3"></audio>
 
         <div class="music-left">
@@ -282,6 +276,8 @@ body::after {
 const music = document.getElementById("music");
 const overlay = document.getElementById("enterOverlay");
 const wrapper = document.getElementById("wrapper");
+const card = document.getElementById("card");
+const musicBar = document.getElementById("musicBar");
 
 const progress = document.getElementById("progress");
 const current = document.getElementById("current");
@@ -309,12 +305,18 @@ progress.addEventListener("input", () => {
 });
 
 overlay.addEventListener("click", async () => {
-    try {
-        await music.play();
-    } catch {}
-
+    try { await music.play(); } catch {}
     overlay.classList.add("hidden");
     wrapper.classList.add("show");
+});
+
+/* PARALLAX EFFECT FOR CARD + MUSIC BAR */
+document.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 12;
+    const y = (e.clientY / window.innerHeight - 0.5) * 12;
+
+    card.style.transform = `translate(${x}px, ${y}px)`;
+    musicBar.style.transform = `translate(${x * 0.6}px, ${y * 0.6}px)`;
 });
 </script>
 
