@@ -63,7 +63,7 @@ body::after {
     pointer-events: none;
 }
 
-/* MAIN CARD */
+/* CARD */
 .card {
     width: 90%;
     max-width: 420px;
@@ -85,7 +85,7 @@ body::after {
 
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.8s ease;
+    transition: 0.8s;
 }
 
 .card.show {
@@ -158,9 +158,9 @@ body::after {
     position: fixed;
     bottom: 30px;
     width: 90%;
-    max-width: 420px;
+    max-width: 500px;
 
-    padding: 12px 15px;
+    padding: 12px 16px;
     border-radius: 20px;
 
     background: rgba(20,20,20,0.6);
@@ -168,7 +168,7 @@ body::after {
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 15px;
 
     opacity: 0;
     transition: 0.8s;
@@ -178,15 +178,51 @@ body::after {
     opacity: 1;
 }
 
-input[type=range] {
-    width: 100px;
+.music-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.song-cover {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.song-info {
+    font-size: 12px;
+}
+
+.song-title {
+    font-weight: 600;
+}
+
+.time {
+    opacity: 0.6;
+}
+
+.music-center {
+    flex: 1;
+}
+
+#progress {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+}
+
+.music-right {
+    font-size: 12px;
+    opacity: 0.6;
 }
 </style>
 </head>
 
 <body>
 
-<div id="enterOverlay">gxnnloser.</div>
+<div id="enterOverlay">click to enter</div>
 
 <img src="background.jpg" id="bg">
 
@@ -219,21 +255,57 @@ input[type=range] {
 
 </div>
 
+<!-- MUSIC PLAYER -->
 <div class="music-bar" id="musicBar">
-    <audio id="music" src="song.mp3" loop></audio>
-    <span>Volume</span>
-    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+    
+    <div class="music-left">
+        <img src="avatar.jpg" class="song-cover">
+        <div class="song-info">
+            <div class="song-title">LVL.</div>
+            <div class="time">
+                <span id="current">0:00</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="music-center">
+        <input type="range" id="progress" value="0">
+    </div>
+
+    <div class="music-right">
+        <span id="duration">0:00</span>
+    </div>
+
+    <audio id="music" src="song.mp3"></audio>
 </div>
 
 <script>
 const music = document.getElementById("music");
-const volume = document.getElementById("volume");
 const overlay = document.getElementById("enterOverlay");
 const card = document.getElementById("card");
 const musicBar = document.getElementById("musicBar");
 
-volume.addEventListener("input", () => {
-    music.volume = volume.value;
+const progress = document.getElementById("progress");
+const current = document.getElementById("current");
+const duration = document.getElementById("duration");
+
+function formatTime(time) {
+    const mins = Math.floor(time / 60);
+    const secs = Math.floor(time % 60);
+    return mins + ":" + (secs < 10 ? "0" + secs : secs);
+}
+
+music.addEventListener("loadedmetadata", () => {
+    duration.textContent = formatTime(music.duration);
+});
+
+music.addEventListener("timeupdate", () => {
+    progress.value = (music.currentTime / music.duration) * 100;
+    current.textContent = formatTime(music.currentTime);
+});
+
+progress.addEventListener("input", () => {
+    music.currentTime = (progress.value / 100) * music.duration;
 });
 
 overlay.addEventListener("click", async () => {
