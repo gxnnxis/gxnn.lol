@@ -63,6 +63,23 @@ body::after {
     pointer-events: none;
 }
 
+/* WRAPPER (card + music) */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.8s;
+}
+
+.wrapper.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* CARD */
 .card {
     width: 90%;
@@ -82,15 +99,6 @@ body::after {
     display: flex;
     flex-direction: column;
     gap: 20px;
-
-    opacity: 0;
-    transform: translateY(20px);
-    transition: 0.8s;
-}
-
-.card.show {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 /* TOP */
@@ -153,29 +161,20 @@ body::after {
     opacity: 0.7;
 }
 
-/* MUSIC BAR */
+/* MUSIC BAR (NOW CONNECTED UNDER CARD) */
 .music-bar {
-    position: fixed;
-    bottom: 30px;
     width: 90%;
-    max-width: 500px;
+    max-width: 420px;
 
-    padding: 12px 16px;
-    border-radius: 20px;
+    padding: 10px 14px;
+    border-radius: 16px;
 
     background: rgba(20,20,20,0.6);
     backdrop-filter: blur(15px);
 
     display: flex;
     align-items: center;
-    gap: 15px;
-
-    opacity: 0;
-    transition: 0.8s;
-}
-
-.music-bar.show {
-    opacity: 1;
+    gap: 12px;
 }
 
 .music-left {
@@ -226,64 +225,64 @@ body::after {
 
 <img src="background.jpg" id="bg">
 
-<div class="card" id="card">
+<div class="wrapper" id="wrapper">
 
-    <div class="top">
-        <img src="avatar.jpg" class="avatar">
-        <div class="name">gxnnloser</div>
+    <div class="card">
+
+        <div class="top">
+            <img src="avatar.jpg" class="avatar">
+            <div class="name">gxnnloser</div>
+        </div>
+
+        <div class="handle">@gxnnloser</div>
+
+        <div class="icons">
+            <a href="#">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 4a16 16 0 0 0-4-1l-.2.4a15 15 0 0 0-7.6 0L8 3A16 16 0 0 0 4 4C2 7 1.5 10 2 13c2 1.5 4 2 6 2l.5-.7c-1-.3-2-.7-2.5-1.2l.5-.4c2 1 4 1 6 0l.5.4c-.5.5-1.5.9-2.5 1.2l.5.7c2 0 4-.5 6-2 .5-3-.5-6-2-9z"/>
+                </svg>
+            </a>
+
+            <a href="#">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2v14a4 4 0 1 1-4-4h1v3h-1a1 1 0 1 0 1 1V2h3a5 5 0 0 0 5 5v3a8 8 0 0 1-5-2z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="stats">
+            <span>👁 47</span>
+        </div>
+
     </div>
 
-    <div class="handle">@gxnnloser</div>
+    <!-- MUSIC BAR -->
+    <div class="music-bar">
+        <audio id="music" src="song.mp3"></audio>
 
-    <div class="icons">
-        <a href="#">
-            <svg viewBox="0 0 24 24">
-                <path d="M20 4a16 16 0 0 0-4-1l-.2.4a15 15 0 0 0-7.6 0L8 3A16 16 0 0 0 4 4C2 7 1.5 10 2 13c2 1.5 4 2 6 2l.5-.7c-1-.3-2-.7-2.5-1.2l.5-.4c2 1 4 1 6 0l.5.4c-.5.5-1.5.9-2.5 1.2l.5.7c2 0 4-.5 6-2 .5-3-.5-6-2-9z"/>
-            </svg>
-        </a>
-
-        <a href="#">
-            <svg viewBox="0 0 24 24">
-                <path d="M12 2v14a4 4 0 1 1-4-4h1v3h-1a1 1 0 1 0 1 1V2h3a5 5 0 0 0 5 5v3a8 8 0 0 1-5-2z"/>
-            </svg>
-        </a>
-    </div>
-
-    <div class="stats">
-        <span>👁 47</span>
-    </div>
-
-</div>
-
-<!-- MUSIC PLAYER -->
-<div class="music-bar" id="musicBar">
-    
-    <div class="music-left">
-        <img src="avatar.jpg" class="song-cover">
-        <div class="song-info">
-            <div class="song-title">LVL.</div>
-            <div class="time">
-                <span id="current">0:00</span>
+        <div class="music-left">
+            <img src="avatar.jpg" class="song-cover">
+            <div class="song-info">
+                <div class="song-title">LVL.</div>
+                <div class="time"><span id="current">0:00</span></div>
             </div>
+        </div>
+
+        <div class="music-center">
+            <input type="range" id="progress" value="0">
+        </div>
+
+        <div class="music-right">
+            <span id="duration">0:00</span>
         </div>
     </div>
 
-    <div class="music-center">
-        <input type="range" id="progress" value="0">
-    </div>
-
-    <div class="music-right">
-        <span id="duration">0:00</span>
-    </div>
-
-    <audio id="music" src="song.mp3"></audio>
 </div>
 
 <script>
 const music = document.getElementById("music");
 const overlay = document.getElementById("enterOverlay");
-const card = document.getElementById("card");
-const musicBar = document.getElementById("musicBar");
+const wrapper = document.getElementById("wrapper");
 
 const progress = document.getElementById("progress");
 const current = document.getElementById("current");
@@ -314,11 +313,7 @@ overlay.addEventListener("click", async () => {
     } catch {}
 
     overlay.classList.add("hidden");
-
-    setTimeout(() => {
-        card.classList.add("show");
-        musicBar.classList.add("show");
-    }, 200);
+    wrapper.classList.add("show");
 });
 </script>
 
