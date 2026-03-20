@@ -16,46 +16,137 @@
 body {
     background: #0d1117;
     color: #e6edf3;
-    padding: 30px;
+    display: flex;
+    height: 100vh;
 }
 
-/* HEADER */
-h1 {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 32px;
+/* SIDEBAR */
+.sidebar {
+    width: 230px;
+    background: #161b22;
+    border-right: 1px solid #30363d;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    font-size: 18px;
     font-weight: 700;
+    padding: 0 20px 20px;
     color: #58a6ff;
 }
 
-/* WALLET CONTAINER */
-.wallet {
-    max-width: 1000px;
-    margin: auto;
-    background: #161b22;
-    padding: 25px;
-    border-radius: 12px;
+.nav-item {
+    padding: 12px 20px;
+    font-size: 15px;
+    color: #c9d1d9;
+    cursor: pointer;
+}
+
+.nav-item.active {
+    background: #1f6feb33;
+    border-left: 3px solid #1f6feb;
+}
+
+.nav-item:hover {
+    background: #1f6feb22;
+}
+
+/* ACTION BUTTONS */
+.action-buttons {
+    margin-top: 20px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.action-btn {
+    background: #21262d;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
     border: 1px solid #30363d;
 }
 
-/* TOTAL BALANCE */
-.total-box {
-    background: #0d419d33;
-    border: 1px solid #1f6feb;
-    padding: 18px;
-    border-radius: 10px;
+.action-btn:hover {
+    background: #30363d;
+}
+
+/* MAIN AREA */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOP BAR */
+.topbar {
+    height: 60px;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+}
+
+.search {
+    background: #21262d;
+    border: 1px solid #30363d;
+    padding: 8px 12px;
+    border-radius: 8px;
+    width: 260px;
+    color: #e6edf3;
+}
+
+.top-icons {
+    display: flex;
+    gap: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* CONTENT */
+.content {
+    padding: 25px;
+    overflow-y: auto;
+}
+
+/* BALANCE HEADER */
+.balance-box {
     margin-bottom: 25px;
 }
 
-.total-title {
+.balance-title {
     font-size: 14px;
     opacity: 0.7;
 }
 
-.total-value {
-    font-size: 32px;
+.balance-value {
+    font-size: 40px;
     font-weight: 700;
     margin-top: 5px;
+}
+
+/* TABS */
+.tabs {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    font-size: 16px;
+    padding-bottom: 8px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.tab.active {
+    border-bottom: 2px solid #1f6feb;
+    opacity: 1;
 }
 
 /* TABLE */
@@ -110,114 +201,91 @@ canvas {
     justify-content: space-between;
     font-size: 14px;
 }
-
-/* MODALS */
-.modal-bg {
-    position: fixed;
-    inset: 0;
-    background: #000000aa;
-    display: none;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal {
-    background: #161b22;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    border: 1px solid #30363d;
-}
-
-.modal h3 {
-    margin-bottom: 10px;
-}
-
-.modal input {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #30363d;
-    background: #0d1117;
-    color: #e6edf3;
-}
-
-.modal button {
-    width: 100%;
-    padding: 10px;
-    background: #238636;
-    border: none;
-    border-radius: 6px;
-    color: white;
-    cursor: pointer;
-}
 </style>
 </head>
 
 <body>
 
-<h1>gxnn.lol Wallet</h1>
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>gxnn.lol</h2>
 
-<div class="wallet">
+    <div class="nav-item active">Assets</div>
+    <div class="nav-item">Home</div>
+    <div class="nav-item">Apps</div>
 
-    <div class="total-box">
-        <div class="total-title">Total Portfolio Value</div>
-        <div class="total-value" id="totalValue">$0.00</div>
-    </div>
-
-    <canvas id="portfolioChart" height="80"></canvas>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Crypto</th>
-                <th>Balance</th>
-                <th>USD Value</th>
-                <th>7d Trend</th>
-            </tr>
-        </thead>
-        <tbody id="cryptoTable"></tbody>
-    </table>
-
-    <div class="history">
-        <h2>Recent Activity</h2>
-
-        <div class="history-item">
-            <span>Received 2.1 ETH</span>
-            <span>Mar 12</span>
-        </div>
-
-        <div class="history-item">
-            <span>Sent 0.3 BTC</span>
-            <span>Mar 10</span>
-        </div>
-
-        <div class="history-item">
-            <span>Received 500 SOL</span>
-            <span>Mar 7</span>
-        </div>
-    </div>
-
-</div>
-
-<!-- SEND MODAL -->
-<div class="modal-bg" id="sendModal">
-    <div class="modal">
-        <h3>Send Crypto</h3>
-        <input placeholder="Address">
-        <input placeholder="Amount">
-        <button onclick="closeModals()">Send</button>
+    <div class="action-buttons">
+        <div class="action-btn">Buy</div>
+        <div class="action-btn">Swap</div>
+        <div class="action-btn">Send</div>
+        <div class="action-btn">Receive</div>
     </div>
 </div>
 
-<!-- RECEIVE MODAL -->
-<div class="modal-bg" id="receiveModal">
-    <div class="modal">
-        <h3>Receive Crypto</h3>
-        <p>Your wallet address:</p>
-        <input value="0xFAKE123456789" readonly>
-        <button onclick="closeModals()">Close</button>
+<!-- MAIN AREA -->
+<div class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <input class="search" placeholder="Search coins, apps...">
+        <div class="top-icons">
+            <span>⚙️</span>
+            <span>👤</span>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- BALANCE -->
+        <div class="balance-box">
+            <div class="balance-title">Balance</div>
+            <div class="balance-value" id="totalValue">$0.00</div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <div class="tab active">Crypto</div>
+            <div class="tab">DeFi</div>
+            <div class="tab">Transactions</div>
+        </div>
+
+        <!-- PORTFOLIO CHART -->
+        <canvas id="portfolioChart" height="80"></canvas>
+
+        <!-- ASSET TABLE -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Crypto</th>
+                    <th>Balance</th>
+                    <th>USD Value</th>
+                    <th>7d Trend</th>
+                </tr>
+            </thead>
+            <tbody id="cryptoTable"></tbody>
+        </table>
+
+        <!-- HISTORY -->
+        <div class="history">
+            <h2>Recent Activity</h2>
+
+            <div class="history-item">
+                <span>Received 2.1 ETH</span>
+                <span>Mar 12</span>
+            </div>
+
+            <div class="history-item">
+                <span>Sent 0.3 BTC</span>
+                <span>Mar 10</span>
+            </div>
+
+            <div class="history-item">
+                <span>Received 500 SOL</span>
+                <span>Mar 7</span>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -242,7 +310,7 @@ const prices = {
     XRP: 0.62
 };
 
-/* STATIC 7‑DAY TREND DATA (never changes) */
+/* STATIC 7‑DAY TREND DATA */
 const trends = {
     BTC: [82, 85, 88, 90, 87, 92, 95],
     ETH: [60, 62, 61, 65, 67, 70, 72],
@@ -324,12 +392,6 @@ new Chart(document.getElementById("portfolioChart"), {
         scales: { x: { display: true }, y: { display: true } }
     }
 });
-
-/* Modals */
-function closeModals() {
-    document.getElementById("sendModal").style.display = "none";
-    document.getElementById("receiveModal").style.display = "none";
-}
 </script>
 
 </body>
