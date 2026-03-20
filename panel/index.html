@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gxnn.lol | OSINT Panel</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top, #1b2735 0%, #090a0f 55%, #020308 100%);
+    color: #e5e5e5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOP BAR */
+.topbar {
+    height: 48px;
+    background: linear-gradient(90deg, #05070b, #0b1018);
+    border-bottom: 1px solid #1f2933;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    justify-content: space-between;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #00e0ff;
+    box-shadow: 0 0 10px #00e0ff;
+}
+
+.topbar-title {
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9ca3af;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.status-pill {
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid #16a34a33;
+    color: #4ade80;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+}
+
+/* LAYOUT */
+.main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    min-height: 0;
+}
+
+/* SIDEBAR */
+.sidebar {
+    background: linear-gradient(180deg, #05070b, #05070b 40%, #05070b 60%, #020308);
+    border-right: 1px solid #1f2933;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-size: 13px;
+}
+
+.sidebar-section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-item {
+    padding: 7px 9px;
+    border-radius: 6px;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: default;
+    background: transparent;
+}
+
+.nav-item span.icon {
+    width: 16px;
+    text-align: center;
+    opacity: 0.7;
+}
+
+.nav-item.active {
+    background: linear-gradient(90deg, #0b1120, #020617);
+    color: #e5e7eb;
+    border: 1px solid #1d4ed8;
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.35);
+}
+
+.nav-item.disabled {
+    opacity: 0.4;
+}
+
+/* CONTENT AREA */
+.content {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* HEADER ROW */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.content-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.content-title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.content-subtitle {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fake-input {
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 999px;
+    border: 1px solid #1f2937;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #6b7280;
+    min-width: 220px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fake-input span.icon {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.btn-ghost {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid #1f2937;
+    font-size: 11px;
+    color: #9ca3af;
+    background: rgba(15, 23, 42, 0.7);
+}
+
+/* GRID PANELS */
+.grid {
+    display: grid;
+    grid-template-columns: 2.1fr 1.4fr;
+    gap: 14px;
+    min-height: 0;
+}
+
+/* PANEL BASE */
+.panel {
+    background: radial-gradient(circle at top left, #111827, #020617);
+    border-radius: 10px;
+    border: 1px solid #1f2937;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(56,189,248,0.08), transparent 40%, transparent 60%, rgba(129,140,248,0.08));
+    mix-blend-mode: soft-light;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #9ca3af;
+    z-index: 1;
+}
+
+.panel-title {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 11px;
+}
+
+.panel-badges {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.badge {
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid #1f2937;
+    font-size: 10px;
+    color: #6b7280;
+}
+
+/* LEFT MAIN PANEL CONTENT */
+.query-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 11px;
+    color: #9ca3af;
+    z-index: 1;
+}
+
+.meta-pill {
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid #111827;
+}
+
+.terminal-box {
+    margin-top: 4px;
+    background: #020617;
+    border-radius: 8px;
+    border: 1px solid #111827;
+    padding: 8px 10px;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 11px;
+    color: #9ca3af;
+    height: 170px;
+    overflow: hidden;
+    position: relative;
+}
+
+.terminal-line {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+
+.terminal-prefix {
+    color: #4ade80;
+}
+
+.terminal-muted {
+    color: #6b7280;
+}
+
+/* RIGHT PANEL CONTENT */
+.table {
+    margin-top: 4px;
+    border-radius: 7px;
+    border: 1px solid #111827;
+    background: rgba(15, 23, 42, 0.9);
+    font-size: 11px;
+    overflow: hidden;
+}
+
+.table-header,
+.table-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1.4fr 0.9fr;
+    padding: 5px 8px;
+}
+
+.table-header {
+    background: rgba(15, 23, 42, 0.9);
+    color: #9ca3af;
+    border-bottom: 1px solid #111827;
+}
+
+.table-row:nth-child(odd) {
+    background: rgba(15, 23, 42, 0.7);
+}
+
+.table-row:nth-child(even) {
+    background: rgba(15, 23, 42, 0.4);
+}
+
+.table-cell-muted {
+    color: #6b7280;
+}
+
+/* FOOTER */
+.footer {
+    height: 26px;
+    border-top: 1px solid #1f2933;
+    background: #020617;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.footer-left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.footer-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+}
+
+.footer-right {
+    display: flex;
+    gap: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .main {
+        grid-template-columns: 1fr;
+    }
+    .sidebar {
+        display: none;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <div class="topbar-left">
+        <div class="logo-dot"></div>
+        <div class="topbar-title">GXNN.LOL / OSINT PANEL</div>
+    </div>
+    <div class="topbar-right">
+        <div class="status-pill">
+            <div class="status-dot"></div>
+            LIVE SESSION
+        </div>
+        <div>USER: gx</div>
+        <div>PROFILE: read‑only mock</div>
+    </div>
+</div>
+
+<div class="main">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div>
+            <div class="sidebar-section-title">Workspace</div>
+            <div class="nav-group">
+                <div class="nav-item active">
+                    <span class="icon">▣</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">◎</span>
+                    <span>Person Lookup</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">⌕</span>
+                    <span>Username Scan</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">☰</span>
+                    <span>IP / Host Intel</span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="sidebar-section-title">Datasets</div>
+            <div class="nav-group">
+                <div class="nav-item disabled">
+                    <span class="icon">⧉</span>
+                    <span>Social Graph</span>
+                </div>
+                <div class="nav-item disabled">
+                    <span class="icon">⇄</span>
+                    <span>Breached Records</span>
+                </div>
+                <div class="nav-item disabled">
+                    <span class="icon">☁</span>
+                    <span>Cloud Artifacts</span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="sidebar-section-title">Session</div>
+            <div class="nav-group">
+                <div class="nav-item">
+                    <span class="icon">⏺</span>
+                    <span>Session Log</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">⚙</span>
+                    <span>Environment</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+        <div class="content-header">
+            <div class="content-title-block">
+                <div class="content-title">OSINT WORKSPACE</div>
+                <div class="content-subtitle">Read‑only mock interface · No real data is queried or stored.</div>
+            </div>
+            <div class="header-controls">
+                <div class="fake-input">
+                    <span class="icon">⌕</span>
+                    <span>Search handle, IP, email, domain…</span>
+                </div>
+                <button class="btn-ghost">New Session</button>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- LEFT PANEL -->
+            <section class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Active query</div>
+                    <div class="panel-badges">
+                        <div class="badge">MODE: MOCK</div>
+                        <div class="badge">SCOPE: UI ONLY</div>
+                    </div>
+                </div>
+
+                <div class="query-meta">
+                    <div class="meta-pill">Target: <strong>&nbsp;@example_handle&nbsp;</strong></div>
+                    <div class="meta-pill">Profile: Passive OSINT</div>
+                    <div class="meta-pill">Resolution: Multi‑source</div>
+                    <div class="meta-pill">Status: Idle · No requests sent</div>
+                </div>
+
+                <div class="terminal-box">
+                    <div class="terminal-line">
+                        <span class="terminal-prefix">gx@panel</span>
+                        <span class="terminal-muted">~/workspace</span>
+                        <span>$</span>
+                        <span>osint run --handle @example_handle</span>
+                    </div>
+                    <div class="terminal-line terminal-muted">
+                        <span>#</span>
+                        <span>This is a visual mock. No real lookups are performed.</span>
+                    </div>
+                    <br>
+                    <div class="terminal-line">
+                        <span class="terminal-prefix">[mock]</span>
+                        <span>Loading providers: social, dns, paste, breach, misc…</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prefix">[mock]</span>
+                        <span>Initializing graph engine…</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prefix">[mock]</span>
+                        <span>Queued tasks: 0 · Completed: 0 · Errors: 0</span>
+                    </div>
+                    <br>
+                    <div class="terminal-line terminal-muted">
+                        <span>#</span>
+                        <span>All output below is static placeholder text.</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prefix">[graph]</span>
+                        <span>Nodes: 0 · Edges: 0 · Components: 0</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prefix">[summary]</span>
+                        <span>No live data. UI only.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT PANEL -->
+            <section class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Source overview</div>
+                    <div class="panel-badges">
+                        <div class="badge">Providers: Mocked</div>
+                    </div>
+                </div>
+
+                <div class="table">
+                    <div class="table-header">
+                        <div>Source</div>
+                        <div>Endpoint</div>
+                        <div>Status</div>
+                    </div>
+                    <div class="table-row">
+                        <div>Social Profiles</div>
+                        <div class="table-cell-muted">/social/lookup/@example_handle</div>
+                        <div class="table-cell-muted">Not executed</div>
+                    </div>
+                    <div class="table-row">
+                        <div>DNS / Host Intel</div>
+                        <div class="table-cell-muted">/dns/resolve/example.com</div>
+                        <div class="table-cell-muted">Not executed</div>
+                    </div>
+                    <div class="table-row">
+                        <div>Paste Archives</div>
+                        <div class="table-cell-muted">/paste/search/example_handle</div>
+                        <div class="table-cell-muted">Not executed</div>
+                    </div>
+                    <div class="table-row">
+                        <div>Breach Datasets</div>
+                        <div class="table-cell-muted">/breach/email/example@mail.com</div>
+                        <div class="table-cell-muted">Not executed</div>
+                    </div>
+                    <div class="table-row">
+                        <div>Metadata / Misc</div>
+                        <div class="table-cell-muted">/meta/aggregate</div>
+                        <div class="table-cell-muted">Not executed</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<div class="footer">
+    <div class="footer-left">
+        <div class="footer-dot"></div>
+        <span>No outbound requests</span>
+    </div>
+    <div class="footer-right">
+        <span>gxnn.lol/panel</span>
+        <span>Build: v4.0</span>
+    </div>
+</div>
+
+</body>
+</html>
