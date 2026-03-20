@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gxnn.lol | Wallet</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Inter, sans-serif;
+}
+
+body {
+    background: #0d1117;
+    color: #e6edf3;
+    padding: 30px;
+}
+
+/* HEADER */
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #58a6ff;
+}
+
+/* WALLET CONTAINER */
+.wallet {
+    max-width: 900px;
+    margin: auto;
+    background: #161b22;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+}
+
+/* TOTAL BALANCE */
+.total-box {
+    background: #0d419d33;
+    border: 1px solid #1f6feb;
+    padding: 18px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.total-title {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.total-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #30363d;
+    text-align: left;
+}
+
+th {
+    color: #8b949e;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+input {
+    width: 100px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    background: #0d1117;
+    color: #e6edf3;
+}
+
+.value {
+    font-weight: 600;
+    color: #58a6ff;
+}
+</style>
+</head>
+
+<body>
+
+<h1>gxnn.lol Wallet</h1>
+
+<div class="wallet">
+
+    <div class="total-box">
+        <div class="total-title">Total Portfolio Value</div>
+        <div class="total-value" id="totalValue">$0.00</div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Crypto</th>
+                <th>Balance</th>
+                <th>USD Value</th>
+            </tr>
+        </thead>
+        <tbody id="cryptoTable"></tbody>
+    </table>
+
+</div>
+
+<script>
+/* Fake crypto prices (static mock values) */
+const prices = {
+    BTC: 68000,
+    ETH: 3500,
+    SOL: 150,
+    BNB: 420,
+    XRP: 0.62,
+    ADA: 0.48,
+    DOGE: 0.12,
+    LTC: 85,
+    DOT: 7.2,
+    AVAX: 42
+};
+
+/* Generate table rows */
+const table = document.getElementById("cryptoTable");
+
+Object.keys(prices).forEach(symbol => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${symbol}</td>
+        <td><input type="number" step="0.0001" value="0" data-symbol="${symbol}"></td>
+        <td class="value" id="value-${symbol}">$0.00</td>
+    `;
+
+    table.appendChild(row);
+});
+
+/* Update totals whenever any input changes */
+function updateValues() {
+    let total = 0;
+
+    document.querySelectorAll("input").forEach(input => {
+        const symbol = input.dataset.symbol;
+        const amount = parseFloat(input.value) || 0;
+        const usdValue = amount * prices[symbol];
+
+        document.getElementById(`value-${symbol}`).textContent =
+            "$" + usdValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        total += usdValue;
+    });
+
+    document.getElementById("totalValue").textContent =
+        "$" + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+/* Attach listeners */
+document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", updateValues);
+});
+</script>
+
+</body>
+</html>
