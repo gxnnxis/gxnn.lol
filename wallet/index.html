@@ -30,7 +30,7 @@ h1 {
 
 /* WALLET CONTAINER */
 .wallet {
-    max-width: 900px;
+    max-width: 1000px;
     margin: auto;
     background: #161b22;
     padding: 25px;
@@ -90,6 +90,72 @@ input {
     font-weight: 600;
     color: #58a6ff;
 }
+
+.graph-cell {
+    width: 120px;
+    height: 40px;
+}
+
+canvas {
+    width: 100% !important;
+    height: 40px !important;
+}
+
+/* TRANSACTION HISTORY */
+.history {
+    margin-top: 40px;
+}
+
+.history h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #58a6ff;
+}
+
+.history-item {
+    padding: 12px;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+/* MODALS */
+.modal-bg {
+    position: fixed;
+    inset: 0;
+    background: #000000aa;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    border: 1px solid #30363d;
+}
+
+.modal h3 {
+    margin-bottom: 10px;
+}
+
+.modal input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.modal button {
+    width: 100%;
+    padding: 10px;
+    background: #238636;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
 </style>
 </head>
 
@@ -104,50 +170,122 @@ input {
         <div class="total-value" id="totalValue">$0.00</div>
     </div>
 
+    <canvas id="portfolioChart" height="80"></canvas>
+
     <table>
         <thead>
             <tr>
                 <th>Crypto</th>
                 <th>Balance</th>
                 <th>USD Value</th>
+                <th>7d Trend</th>
             </tr>
         </thead>
         <tbody id="cryptoTable"></tbody>
     </table>
 
+    <div class="history">
+        <h2>Recent Activity</h2>
+
+        <div class="history-item">
+            <span>Received 2.1 ETH</span>
+            <span>Mar 12</span>
+        </div>
+
+        <div class="history-item">
+            <span>Sent 0.3 BTC</span>
+            <span>Mar 10</span>
+        </div>
+
+        <div class="history-item">
+            <span>Received 500 SOL</span>
+            <span>Mar 7</span>
+        </div>
+    </div>
+
 </div>
 
+<!-- SEND MODAL -->
+<div class="modal-bg" id="sendModal">
+    <div class="modal">
+        <h3>Send Crypto</h3>
+        <input placeholder="Address">
+        <input placeholder="Amount">
+        <button onclick="closeModals()">Send</button>
+    </div>
+</div>
+
+<!-- RECEIVE MODAL -->
+<div class="modal-bg" id="receiveModal">
+    <div class="modal">
+        <h3>Receive Crypto</h3>
+        <p>Your wallet address:</p>
+        <input value="0xFAKE123456789" readonly>
+        <button onclick="closeModals()">Close</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-/* Fake crypto prices (static mock values) */
+/* Mid‑whale (lower side) hard‑coded balances */
+const balances = {
+    BTC: 14.2,
+    ETH: 220,
+    SOL: 8500,
+    BNB: 600,
+    XRP: 90000
+};
+
+/* Fake prices */
 const prices = {
     BTC: 68000,
     ETH: 3500,
     SOL: 150,
     BNB: 420,
-    XRP: 0.62,
-    ADA: 0.48,
-    DOGE: 0.12,
-    LTC: 85,
-    DOT: 7.2,
-    AVAX: 42
+    XRP: 0.62
 };
 
-/* Generate table rows */
+/* Fake 7‑day trend data */
+function randomTrend() {
+    return Array.from({ length: 7 }, () => Math.random() * 100);
+}
+
+/* Build table */
 const table = document.getElementById("cryptoTable");
 
-Object.keys(prices).forEach(symbol => {
+Object.keys(balances).forEach(symbol => {
     const row = document.createElement("tr");
 
     row.innerHTML = `
         <td>${symbol}</td>
-        <td><input type="number" step="0.0001" value="0" data-symbol="${symbol}"></td>
+        <td><input type="number" step="0.0001" value="${balances[symbol]}" data-symbol="${symbol}"></td>
         <td class="value" id="value-${symbol}">$0.00</td>
+        <td class="graph-cell"><canvas id="graph-${symbol}"></canvas></td>
     `;
 
     table.appendChild(row);
+
+    new Chart(document.getElementById(`graph-${symbol}`), {
+        type: "line",
+        data: {
+            labels: ["", "", "", "", "", "", ""],
+            datasets: [{
+                data: randomTrend(),
+                borderColor: "#58a6ff",
+                borderWidth: 2,
+                fill: false,
+                tension: 0.3
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { x: { display: false }, y: { display: false } }
+        }
+    });
 });
 
-/* Update totals whenever any input changes */
+/* Update totals */
 function updateValues() {
     let total = 0;
 
@@ -157,19 +295,46 @@ function updateValues() {
         const usdValue = amount * prices[symbol];
 
         document.getElementById(`value-${symbol}`).textContent =
-            "$" + usdValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            "$" + usdValue.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
         total += usdValue;
     });
 
     document.getElementById("totalValue").textContent =
-        "$" + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        "$" + total.toLocaleString(undefined, { minimumFractionDigits: 2 });
 }
 
-/* Attach listeners */
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("input", updateValues);
 });
+
+updateValues();
+
+/* Portfolio chart */
+new Chart(document.getElementById("portfolioChart"), {
+    type: "line",
+    data: {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [{
+            label: "Portfolio Value",
+            data: [120000, 123000, 125500, 128000, 130000, 135000, 142841],
+            borderColor: "#1f6feb",
+            backgroundColor: "#1f6feb33",
+            fill: true,
+            tension: 0.3
+        }]
+    },
+    options: {
+        plugins: { legend: { display: false } },
+        scales: { x: { display: true }, y: { display: true } }
+    }
+});
+
+/* Modals */
+function closeModals() {
+    document.getElementById("sendModal").style.display = "none";
+    document.getElementById("receiveModal").style.display = "none";
+}
 </script>
 
 </body>
