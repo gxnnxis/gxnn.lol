@@ -1,0 +1,92 @@
+@font-face {
+  font-family: "Outfit";
+  src: url("assets/outfit.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: "Outfit", sans-serif;
+  background: #ffffff;
+  color: #070707;
+  overflow: hidden;
+}
+
+.sections {
+  position: relative;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  z-index: 2;
+}
+
+.section {
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.content {
+  max-width: 800px;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #000000;
+  font-size: 0.75rem;
+  cursor: pointer;
+  pointer-events: auto;
+  animation: float 2.5s ease-in-out infinite;
+  opacity: 0.85;
+}
+
+.scroll-indicator i {
+  font-size: 1rem;
+}
+
+.scroll-indicator:hover {
+  opacity: 1;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, 8px);
+  }
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
