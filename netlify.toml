@@ -1,0 +1,4 @@
+  [[redirects]]
+  from = "/aquafilez/*"
+  to = "/aqua.html"
+  status = 200
