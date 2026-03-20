@@ -224,7 +224,7 @@ canvas {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-/* Mid‑whale (lower side) hard‑coded balances — edit ONLY here */
+/* Hard‑coded balances */
 const balances = {
     BTC: 14.2,
     ETH: 220,
@@ -242,12 +242,16 @@ const prices = {
     XRP: 0.62
 };
 
-/* Fake 7‑day trend data */
-function randomTrend() {
-    return Array.from({ length: 7 }, () => Math.random() * 100);
-}
+/* STATIC 7‑DAY TREND DATA (never changes) */
+const trends = {
+    BTC: [82, 85, 88, 90, 87, 92, 95],
+    ETH: [60, 62, 61, 65, 67, 70, 72],
+    SOL: [40, 42, 45, 47, 50, 52, 55],
+    BNB: [30, 31, 33, 34, 36, 38, 40],
+    XRP: [10, 11, 12, 12, 13, 14, 15]
+};
 
-/* Build table (STATIC VALUES — NOT EDITABLE FROM UI) */
+/* Build table */
 const table = document.getElementById("cryptoTable");
 
 Object.keys(balances).forEach(symbol => {
@@ -267,7 +271,7 @@ Object.keys(balances).forEach(symbol => {
         data: {
             labels: ["", "", "", "", "", "", ""],
             datasets: [{
-                data: randomTrend(),
+                data: trends[symbol],
                 borderColor: "#58a6ff",
                 borderWidth: 2,
                 fill: false,
@@ -281,7 +285,7 @@ Object.keys(balances).forEach(symbol => {
     });
 });
 
-/* Update totals based on hard‑coded balances */
+/* Update totals */
 function updateValues() {
     let total = 0;
 
@@ -290,18 +294,18 @@ function updateValues() {
         const usdValue = amount * prices[symbol];
 
         document.getElementById(`value-${symbol}`).textContent =
-            "$" + usdValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            "$" + usdValue.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
         total += usdValue;
     });
 
     document.getElementById("totalValue").textContent =
-        "$" + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        "$" + total.toLocaleString(undefined, { minimumFractionDigits: 2 });
 }
 
 updateValues();
 
-/* Portfolio chart (static mock) */
+/* Portfolio chart */
 new Chart(document.getElementById("portfolioChart"), {
     type: "line",
     data: {
@@ -326,14 +330,6 @@ function closeModals() {
     document.getElementById("sendModal").style.display = "none";
     document.getElementById("receiveModal").style.display = "none";
 }
-
-/* Expose modal openers if you want to hook buttons later */
-window.openSendModal = () => {
-    document.getElementById("sendModal").style.display = "flex";
-};
-window.openReceiveModal = () => {
-    document.getElementById("receiveModal").style.display = "flex";
-};
 </script>
 
 </body>
