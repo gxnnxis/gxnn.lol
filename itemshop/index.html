@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gxnn.lol | Item Shop</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Inter, sans-serif;
+}
+
+body {
+    background: #0a0a0a;
+    color: white;
+    padding: 30px;
+}
+
+/* PAGE TITLE */
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 32px;
+    text-shadow: 0 0 15px rgba(0, 150, 255, 0.7);
+}
+
+/* GRID */
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* ITEM CARD */
+.item {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 15px;
+    padding: 12px;
+    text-align: center;
+    transition: 0.25s;
+}
+
+.item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0,150,255,0.5);
+}
+
+/* ITEM IMAGE */
+.item img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* ITEM NAME */
+.item-name {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* VBucks PRICE */
+.price {
+    margin-top: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #00d4ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+/* VBucks ICON */
+.price img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* MOBILE FIX */
+@media (max-width: 500px) {
+    .item img {
+        height: 130px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>gxnn.lol Item Shop</h1>
+
+<div class="shop-grid">
+
+    <!-- ITEM TEMPLATE (copy this block to add more items) -->
+    <div class="item">
+        <img src="items/skin1.png" alt="Item Image">
+        <div class="item-name">Cool Skin</div>
+        <div class="price">
+            <img src="vbuck.png" alt="V-Bucks">
+            1200
+        </div>
+    </div>
+
+    <div class="item">
+        <img src="items/skin2.png" alt="Item Image">
+        <div class="item-name">Epic Outfit</div>
+        <div class="price">
+            <img src="vbuck.png" alt="V-Bucks">
+            1500
+        </div>
+    </div>
+
+    <div class="item">
+        <img src="items/pickaxe.png" alt="Item Image">
+        <div class="item-name">Sharp Pickaxe</div>
+        <div class="price">
+            <img src="vbuck.png" alt="V-Bucks">
+            800
+        </div>
+    </div>
+
+    <div class="item">
+        <img src="items/emote.png" alt="Item Image">
+        <div class="item-name">Funny Emote</div>
+        <div class="price">
+            <img src="vbuck.png" alt="V-Bucks">
+            500
+        </div>
+    </div>
+
+    <div class="item">
+        <img src="items/glider.png" alt="Item Image">
+        <div class="item-name">Cool Glider</div>
+        <div class="price">
+            <img src="vbuck.png" alt="V-Bucks">
+            1200
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
