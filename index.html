@@ -81,23 +81,18 @@ body::after {
 
 /* CARD */
 .card {
-    width: 600px;
-    height: 300px;
+    width: 90%;
+    max-width: 600px;
     padding: 35px;
     border-radius: 25px;
-
     background: rgba(20, 20, 20, 0.6);
-    backdrop-filter: blur(1px);
-
     border: 2px solid rgba(255,255,255,0.3);
     box-shadow: 
         0 0 50px rgba(140, 0, 255, 0.3),
         inset 0 0 15px rgba(255,255,255,0.03);
-
     display: flex;
     flex-direction: column;
     gap: 25px;
-
     transition: transform 0.15s ease-out;
 }
 
@@ -124,7 +119,7 @@ body::after {
         0 0 30px rgba(180, 0, 255, 0.8);
 }
 
-/* HANDLE */
+/* HANDLE / BIO */
 .handle {
     text-align: center;
     padding: 18px;
@@ -133,13 +128,14 @@ body::after {
     border: 2px solid rgba(255,255,255,0.3);
     font-weight: 600;
     font-size: 18px;
+    white-space: pre-line; /* allows natural new lines */
 }
 
 /* ICONS */
 .icons {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 40px;
 }
 
 .icons a {
@@ -162,19 +158,16 @@ body::after {
 
 /* MUSIC BAR */
 .music-bar {
-    width: 600px;
+    width: 90%;
+    max-width: 600px;
     height: 60px;
     padding: 14px 20px;
     border-radius: 20px;
-
     background: rgba(20,20,20,0.65);
-    backdrop-filter: blur(1px);
     border: 2px solid rgba(255,255,255,0.3);
-
     display: flex;
     align-items: center;
     gap: 16px;
-
     transition: transform 0.15s ease-out;
 }
 
@@ -222,7 +215,7 @@ body::after {
 
 <body>
 
-<div id="enterOverlay">gxnnloser.</div>
+<div id="enterOverlay">click to enter</div>
 
 <img src="background.jpg" id="bg" alt="background image">
 
@@ -235,17 +228,18 @@ body::after {
             <div class="name">gxnnloser</div>
         </div>
 
-<div class="handle">
-    @gxnnloser<br>
-    start calling her pacific the way my jaeger be on her rim
-</div>
+        <div class="handle">
+@gxnnloser
+start calling her pacific the way my jaeger be on her rim
+        </div>
+
         <div class="icons">
-            <a href="https://tiktok.com/gxnnloser" target="_blank">
-                <img src="tiktok.webp" alt="TikTok">
+            <a href="https://www.tiktok.com/" target="_blank">
+                <img src="tiktok.png" alt="TikTok">
             </a>
 
-            <a href="https://discord.com/user/746117601289044050" target="_blank">
-                <img src="discord.webp" alt="Discord">
+            <a href="https://discord.com/" target="_blank">
+                <img src="discord.png" alt="Discord">
             </a>
         </div>
 
