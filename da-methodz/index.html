@@ -23,6 +23,7 @@ body {
 
 .container {
     width: 700px;
+    max-width: 100%;
 }
 
 /* Reddit-style post card */
@@ -56,6 +57,25 @@ body {
     font-size: 13px;
     opacity: 0.6;
 }
+
+/* 📱 MOBILE FIXES */
+@media (max-width: 600px) {
+    body {
+        padding: 20px;
+    }
+
+    .post {
+        padding: 15px;
+    }
+
+    .post-title {
+        font-size: 18px;
+    }
+
+    .post-body {
+        font-size: 14px;
+    }
+}
 </style>
 </head>
 
@@ -67,7 +87,6 @@ body {
 /*
    🔥 BACKEND SIMULATION 🔥
    Paste your text here. Each entry becomes a Reddit-style post.
-   You can replace this with a fetch() call later if you want real backend support.
 */
 
 const posts = [
@@ -82,9 +101,7 @@ const posts = [
     {
     title: "Nigga wants members ☠️",
     body: "omg another nigga trying to get members ah skidddd ahhhhh nigga"
-    }
-
-
+    },
 
     // Add more posts like this:
     // { title: "My Title", body: "My long text..." }
