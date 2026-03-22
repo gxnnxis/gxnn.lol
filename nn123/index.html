@@ -10,6 +10,12 @@
       padding: 0;
       box-sizing: border-box;
     }
+        <!-- SOCIAL / EMBED PREVIEW -->
+<meta property="og:title" content="gxnn.lol highlightz">
+<meta property="og:description" content="Explore the nn123 highlights">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gxnn.lol/nn123">
+<meta property="og:image" content="https://gxnn.lol/nn123.mp4">
 
     body {
       min-height: 100vh;
@@ -22,38 +28,79 @@
 
     .video-wrapper {
       position: relative;
-      padding: 6px; /* space for the glow border */
-      border-radius: 18px;
+      width: 85vw;
+      max-width: 1400px;
+      padding: 10px;
+      border-radius: 20px;
       background: radial-gradient(circle at top left, #ff1b1b, #000000 55%);
+      overflow: hidden;
       box-shadow:
-        0 0 25px rgba(255, 0, 0, 0.7),
-        0 0 60px rgba(0, 0, 0, 0.9);
+        0 0 35px rgba(255, 0, 0, 0.8),
+        0 0 80px rgba(0, 0, 0, 1);
     }
 
+    /* 🔥 MOVING LIGHT EFFECT (same style as /itemshop) */
+    .video-wrapper::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: linear-gradient(
+        120deg,
+        rgba(255, 40, 40, 0.25),
+        rgba(0, 0, 0, 0.1),
+        rgba(255, 40, 40, 0.25)
+      );
+      mix-blend-mode: screen;
+      animation: lightMove 6s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes lightMove {
+      0% {
+        transform: translateX(-20%) translateY(-10%);
+      }
+      100% {
+        transform: translateX(20%) translateY(10%);
+      }
+    }
+
+    /* Outer glow */
     .video-wrapper::before {
       content: "";
       position: absolute;
-      inset: -8px;
-      border-radius: 22px;
+      inset: -12px;
+      border-radius: 26px;
       background: conic-gradient(from 180deg, #ff2a2a, #000000, #ff2a2a);
-      opacity: 0.35;
-      filter: blur(10px);
+      opacity: 0.4;
+      filter: blur(14px);
       z-index: -1;
     }
 
     video {
-      display: block;
-      max-width: min(90vw, 900px);
-      max-height: 70vh;
-      border-radius: 12px;
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
       background: #000;
+      display: block;
+    }
+
+    /* Mobile scaling */
+    @media (max-width: 600px) {
+      .video-wrapper {
+        width: 95vw;
+        padding: 6px;
+      }
+      video {
+        border-radius: 10px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="video-wrapper">
     <video controls autoplay muted loop>
-<source src="nn123.mp4" type="video/mp4">
+      <source src="nn123.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   </div>
