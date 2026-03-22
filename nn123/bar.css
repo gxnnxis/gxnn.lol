@@ -1,41 +1,39 @@
 /* bar.css
-   Horizontal-only translation, rotated -45deg so left→right motion
-   appears as a diagonal sweep from bottom-left to top-right.
-   - Animation uses translateX only (no translateY) for constant horizontal motion.
-   - Rotation is applied before translateX in the transform chain so the visual
-     sweep goes from bottom-left (start) to top-right (end).
-   - Traversal duration: 3s, linear.
-   - Neon core (::after) + blurred glow (::before).
+   Diagonal light bar sweeping LEFT → RIGHT
+   Angle: -45deg (bottom-left → top-right)
+   Duration: 3s across entire screen
 */
 
 :root{
   --core-color: #ff1b1b;
   --glow-color: rgba(255,27,27,0.95);
   --glow-soft: rgba(255,27,27,0.18);
+
   --bar-thickness: 12px;
   --core-thickness: 2px;
   --glow-blur: 28px;
-  --duration: 3s; /* traversal duration */
+
+  --duration: 3s;
 }
 
-/* The bar is centered; rotate first, then translateX in the animation.
-   Because rotation is -45deg, translateX left→right maps visually from
-   bottom-left to top-right. */
+/* Main sweeping bar */
 .lightbar {
   position: fixed;
   top: 50%;
-  left: 50%;
-  width: 220vw;                 /* wide enough to cover viewport when rotated */
+  left: -140vw;              /* start fully offscreen left */
+  width: 280vw;              /* long enough for diagonal coverage */
   height: var(--bar-thickness);
+
   pointer-events: none;
   z-index: 0;
 
-  /* Important: center, rotate, then translateX in keyframes */
+  transform: rotate(-45deg);
   transform-origin: center;
-  transform: translate(-50%, -50%) rotate(-45deg) translateX(-120%);
-  animation: sweepLeftToRight var(--duration) linear infinite;
 
-  /* tapered core gradient so ends fade */
+  animation: sweepLeftToRight var(--duration) linear infinite;
+  will-change: transform;
+
+  /* tapered laser gradient */
   background: linear-gradient(
     90deg,
     rgba(255,27,27,0) 0%,
@@ -45,19 +43,25 @@
     rgba(255,27,27,0) 100%
   );
 
-  box-shadow: 0 0 40px var(--glow-soft), 0 0 100px rgba(0,0,0,0.6);
+  box-shadow:
+    0 0 40px var(--glow-soft),
+    0 0 100px rgba(0,0,0,0.6);
+
   opacity: 0.95;
 }
 
-/* blurred ambient glow */
+/* blurred glow */
 .lightbar::before {
   content: "";
   position: absolute;
   left: 0;
   top: 50%;
+
   width: 100%;
   height: calc(var(--bar-thickness) * 6);
+
   transform: translateY(-50%);
+
   background: linear-gradient(
     90deg,
     rgba(255,27,27,0) 0%,
@@ -66,81 +70,47 @@
     rgba(255,27,27,0.95) 88%,
     rgba(255,27,27,0) 100%
   );
+
   filter: blur(var(--glow-blur));
-  opacity: 0.78;
-  pointer-events: none;
+  opacity: 0.75;
+
   border-radius: 999px;
+  pointer-events: none;
 }
 
-/* sharp neon core line */
+/* sharp neon core */
 .lightbar::after {
   content: "";
   position: absolute;
   left: 0;
   top: 50%;
+
   width: 100%;
   height: var(--core-thickness);
+
   transform: translateY(-50%);
   background: var(--core-color);
+
   border-radius: 2px;
+
   box-shadow:
     0 0 10px var(--glow-color),
     0 0 22px rgba(255,27,27,0.55);
+
   pointer-events: none;
 }
 
-/* Optional triangular caps if you add two spans inside the .lightbar:
-   <div class="lightbar"><span class="cap cap-left"></span><span class="cap cap-right"></span></div>
-   They will move with the bar because they are children. */
-.lightbar .cap {
-  position: absolute;
-  width: 44px;
-  height: 44px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  filter: drop-shadow(0 8px 20px rgba(255,27,27,0.12));
-  background: linear-gradient(180deg, rgba(255,27,27,0.98), rgba(255,27,27,0.6));
-  z-index: 1;
-}
-.lightbar .cap-left {
-  left: -20px;
-  clip-path: polygon(100% 0, 0 50%, 100% 100%);
-  transform: translateY(-50%) rotate(-45deg);
-}
-.lightbar .cap-right {
-  right: -20px;
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-  transform: translateY(-50%) rotate(-45deg);
-}
-
-/* Keyframes: only translateX changes (no translateY). Because the element is rotated
-   -45deg in the base transform, this horizontal motion appears as a diagonal sweep
-   from bottom-left (start) to top-right (end). */
+/* LEFT → RIGHT sweep */
 @keyframes sweepLeftToRight {
-  0% {
-    transform: translate(-50%, -50%) rotate(-45deg) translateX(-120%);
-    opacity: 0.45;
+  from {
+    transform: rotate(-45deg) translateX(0);
   }
-  20% {
-    transform: translate(-50%, -50%) rotate(-45deg) translateX(-60%);
-    opacity: 0.85;
-  }
-  50% {
-    transform: translate(-50%, -50%) rotate(-45deg) translateX(0%);
-    opacity: 1;
-  }
-  80% {
-    transform: translate(-50%, -50%) rotate(-45deg) translateX(60%);
-    opacity: 0.85;
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(-45deg) translateX(120%);
-    opacity: 0.45;
+  to {
+    transform: rotate(-45deg) translateX(280vw);
   }
 }
 
-/* Small-screen adjustments */
+/* Mobile tuning */
 @media (max-width: 800px) {
   :root {
     --bar-thickness: 9px;
@@ -148,13 +118,19 @@
     --glow-blur: 18px;
     --duration: 3s;
   }
-  .lightbar { opacity: 0.85; }
-  .lightbar::before { opacity: 0.6; filter: blur(16px); }
-  .lightbar::after { box-shadow: 0 0 6px var(--glow-color), 0 0 14px rgba(255,27,27,0.5); }
-  .lightbar .cap { display: none; }
-}
 
-/* Troubleshooting:
-   - Ensure .lightbar is a direct child of <body> and not inside an element with its own transform.
-   - Do not add inline transforms that override these rules.
-*/
+  .lightbar {
+    opacity: 0.85;
+  }
+
+  .lightbar::before {
+    opacity: 0.6;
+    filter: blur(16px);
+  }
+
+  .lightbar::after {
+    box-shadow:
+      0 0 6px var(--glow-color),
+      0 0 14px rgba(255,27,27,0.5);
+  }
+}
