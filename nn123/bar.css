@@ -1,118 +1,33 @@
-/* bar.css
-   Horizontal sweep LEFT → RIGHT
-   Bar angled -45deg (bottom-left → top-right)
-   3 seconds across full screen
-*/
-
-:root{
-  --core-color: #ff1b1b;
-  --glow-color: rgba(255,27,27,0.95);
-  --glow-soft: rgba(255,27,27,0.18);
-
-  --bar-thickness: 12px;
-  --core-thickness: 2px;
-  --glow-blur: 28px;
-
+:root {
   --duration: 3s;
+  --thickness: 4px;
+  --color: #ff1b1b;
 }
 
 .lightbar {
   position: fixed;
   top: 50%;
-  left: 50%;
+  left: 0;
 
-  width: 240vw;
-  height: var(--bar-thickness);
+  width: 200vw;
+  height: var(--thickness);
+
+  background: var(--color);
+
+  transform: rotate(-45deg);
+  transform-origin: left center;
+
+  animation: sweep var(--duration) linear infinite;
 
   pointer-events: none;
-  z-index: 0;
-
-  transform-origin: center;
-
-  /* start off-screen left */
-  transform: translate(-50%, -50%) rotate(-45deg) translateX(-140vw);
-
-  animation: sweepLeftToRight var(--duration) linear infinite;
-  will-change: transform;
-
-  background: linear-gradient(
-    90deg,
-    rgba(255,27,27,0) 0%,
-    rgba(255,27,27,0.95) 12%,
-    rgba(255,27,27,0.98) 50%,
-    rgba(255,27,27,0.95) 88%,
-    rgba(255,27,27,0) 100%
-  );
-
-  box-shadow:
-    0 0 40px var(--glow-soft),
-    0 0 100px rgba(0,0,0,0.6);
-
-  opacity: 0.95;
+  z-index: 9999;
 }
 
-/* glow */
-.lightbar::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-
-  width: 100%;
-  height: calc(var(--bar-thickness) * 6);
-
-  transform: translateY(-50%);
-
-  background: linear-gradient(
-    90deg,
-    rgba(255,27,27,0) 0%,
-    rgba(255,27,27,0.95) 12%,
-    rgba(255,27,27,0.98) 50%,
-    rgba(255,27,27,0.95) 88%,
-    rgba(255,27,27,0) 100%
-  );
-
-  filter: blur(var(--glow-blur));
-  opacity: 0.75;
-  border-radius: 999px;
-}
-
-/* core */
-.lightbar::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-
-  width: 100%;
-  height: var(--core-thickness);
-
-  transform: translateY(-50%);
-  background: var(--core-color);
-
-  border-radius: 2px;
-
-  box-shadow:
-    0 0 10px var(--glow-color),
-    0 0 22px rgba(255,27,27,0.55);
-}
-
-/* horizontal movement */
-@keyframes sweepLeftToRight {
-  0% {
-    transform: translate(-50%, -50%) rotate(-45deg) translateX(-140vw);
+@keyframes sweep {
+  from {
+    transform: rotate(-45deg) translateX(-100%);
   }
-
-  100% {
-    transform: translate(-50%, -50%) rotate(-45deg) translateX(140vw);
-  }
-}
-
-/* mobile */
-@media (max-width: 800px) {
-  :root {
-    --bar-thickness: 9px;
-    --core-thickness: 1.5px;
-    --glow-blur: 18px;
+  to {
+    transform: rotate(-45deg) translateX(100vw);
   }
 }
