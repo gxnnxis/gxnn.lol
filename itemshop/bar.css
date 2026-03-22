@@ -1,0 +1,31 @@
+/* GLOBAL LIGHTBAR — behind everything */
+.lightbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 38px;              /* thin laser start */
+  height: 38px;
+  background: #ff1b1b;
+  filter: blur(28px);       /* smoother glow */
+  opacity: 0.55;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: lightbarMove 7s cubic-bezier(0.55, 0.03, 0.25, 1) infinite;
+}
+
+/* DIAGONAL EXPAND → COMPRESS MOTION */
+@keyframes lightbarMove {
+  0% {
+    transform: translate(0, 0) scale(0.35);
+    opacity: 0.35;
+  }
+  45% {
+    transform: translate(48vw, 48vh) scale(2.4);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate(100vw, 100vh) scale(0.35);
+    opacity: 0.35;
+  }
+}
