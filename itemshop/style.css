@@ -23,7 +23,7 @@ body{
 
 /* PAGE LAYOUT */
 main{
-  max-width:1600px; 
+  max-width:1600px;
   margin:0 auto;
   width:100%;
 }
@@ -38,13 +38,15 @@ h1{
   letter-spacing:0.6px;
 }
 
-/* GRID — force 5 columns on large screens, step down responsively */
+/* GRID — force 5 columns on large screens */
 .shop-grid{
   display:grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap:28px;
   align-items:stretch;
   padding:8px;
+  position:relative; /* stacking context for items */
+  z-index:1;
 }
 
 /* ============================= */
@@ -56,14 +58,15 @@ h1{
   min-height:0;
   background:var(--card-bg);
   border-radius:16px;
-  border:10px solid #000; /* thick black border for bevel effect */
+  border:10px solid #000; /* black border for bevel effect */
   box-shadow:
     0 0 20px var(--accent),
     0 0 40px rgba(255,27,27,0.5),
     inset 0 0 8px rgba(255,27,27,0.3);
   overflow:hidden;
   transition:transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s;
-  position:relative;
+  position: relative;
+  z-index: 1; /* above lightbar */
   min-height:420px;
 }
 
