@@ -1,6 +1,6 @@
 /* bar.css
    Diagonal sweeping bar that travels from top-left to bottom-right.
-   - Traversal across the viewport takes exactly 1.5s at a constant (linear) rate.
+   - Traversal across the viewport now takes exactly 3s at a constant (linear) rate.
    - Movement direction: starts at top-left and moves to bottom-right.
    - Drawing direction inverted by anchoring scale to the right edge (scaleX grows/shrinks from the right).
    - Soft blurred glow (::before) and sharp neon core (::after).
@@ -14,7 +14,7 @@
   --bar-thickness: 12px;    /* visible band thickness */
   --core-thickness: 2px;    /* sharp neon line thickness */
   --glow-blur: 28px;
-  --anim-duration: 1.5s;    /* traversal duration set to 1.5 seconds */
+  --anim-duration: 3s;      /* traversal duration set to 3 seconds */
   --start-scale: 0.18;      /* short at start/end */
   --mid-scale: 1.6;         /* long in middle */
 }
@@ -172,7 +172,7 @@
     --glow-blur: 18px;
     --start-scale: 0.20;
     --mid-scale: 1.2;
-    --anim-duration: 1.5s; /* keep traversal time the same on small screens */
+    --anim-duration: 3s; /* keep traversal time the same on small screens */
   }
   .lightbar { opacity: 0.85; }
   .lightbar::before { opacity: 0.6; filter: blur(16px); }
