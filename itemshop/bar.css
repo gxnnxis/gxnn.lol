@@ -1,31 +1,101 @@
-/* GLOBAL LIGHTBAR — behind everything */
+/* bar.css
+   Diagonal sweeping bar (full-width diagonal stripe with core + glow)
+   Replaces the small dot with a long diagonal bar that sweeps across the screen.
+*/
+
 .lightbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 38px;              /* thin laser start */
-  height: 38px;
-  background: #ff1b1b;
-  filter: blur(28px);       /* smoother glow */
-  opacity: 0.55;
-  border-radius: 50%;
+  /* start well off-screen so rotation covers the viewport diagonally */
+  top: -30vh;
+  left: -50vw;
+
+  /* very wide so the rotated bar spans the viewport */
+  width: 200vw;
+  height: 10px;                     /* core thickness */
   pointer-events: none;
-  z-index: 0;
-  animation: lightbarMove 7s cubic-bezier(0.55, 0.03, 0.25, 1) infinite;
+  z-index: 0;                       /* behind content */
+
+  /* subtle base gradient so edges fade out */
+  background: linear-gradient(
+    90deg,
+    rgba(255, 27, 27, 0) 0%,
+    rgba(255, 27, 27, 1) 50%,
+    rgba(255, 27, 27, 0) 100%
+  );
+
+  transform: rotate(45deg) translateX(-120%);
+  transform-origin: center;
+  opacity: 0.95;
+  animation: diagonalSweep 7s cubic-bezier(0.55, 0.03, 0.25, 1) infinite;
 }
 
-/* DIAGONAL EXPAND → COMPRESS MOTION */
-@keyframes lightbarMove {
+/* blurred glow layer */
+.lightbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+
+  /* heavy blur for the ambient glow */
+  background: linear-gradient(
+    90deg,
+    rgba(255, 27, 27, 0) 0%,
+    rgba(255, 27, 27, 0.95) 50%,
+    rgba(255, 27, 27, 0) 100%
+  );
+  filter: blur(22px);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* sharp core line on top of the glow for a neon effect */
+.lightbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;                      /* sharp core thickness */
+  transform: translateY(-50%);
+  background: #ff1b1b;              /* exact red */
+  border-radius: 2px;
+  box-shadow:
+    0 0 8px rgba(255, 27, 27, 0.9),
+    0 0 20px rgba(255, 27, 27, 0.6);
+  pointer-events: none;
+}
+
+/* Sweep animation: move the rotated bar across the screen, with a slight scale pulse */
+@keyframes diagonalSweep {
   0% {
-    transform: translate(0, 0) scale(0.35);
-    opacity: 0.35;
+    transform: rotate(45deg) translateX(-120%) scaleX(0.9);
+    opacity: 0.45;
   }
-  45% {
-    transform: translate(48vw, 48vh) scale(2.4);
-    opacity: 0.75;
+  35% {
+    transform: rotate(45deg) translateX(-10%) scaleX(1.25);
+    opacity: 0.95;
+  }
+  65% {
+    transform: rotate(45deg) translateX(10%) scaleX(1.05);
+    opacity: 0.95;
   }
   100% {
-    transform: translate(100vw, 100vh) scale(0.35);
-    opacity: 0.35;
+    transform: rotate(45deg) translateX(120%) scaleX(0.85);
+    opacity: 0.45;
+  }
+}
+
+/* Optional: reduce intensity on small screens so it doesn't overwhelm content */
+@media (max-width: 600px) {
+  .lightbar {
+    height: 8px;
+  }
+  .lightbar::before {
+    filter: blur(16px);
+    opacity: 0.6;
+  }
+  .lightbar::after {
+    height: 1.5px;
+    box-shadow: 0 0 6px rgba(255, 27, 27, 0.9), 0 0 14px rgba(255, 27, 27, 0.5);
   }
 }
