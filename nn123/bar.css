@@ -1,12 +1,13 @@
+### bar.css
 
+```css
 /* bar.css
    Diagonal sweeping bar that travels from top-left to bottom-right.
-   - The bar is a long, thin element rotated 45deg.
-   - It grows short → long → short (start, middle, end) while translating across the screen.
+   - Movement: starts at top-left and moves to bottom-right.
+   - Drawing direction inverted by anchoring scale to the right edge,
+     so the visible segment appears to extend/erase from the opposite end.
    - Soft blurred glow (::before) and sharp neon core (::after).
    - Optional triangular caps supported if you add two spans inside the .lightbar element.
-   - This version positions the bar centered in the viewport and animates its translate
-     so it reliably moves from top-left to bottom-right instead of sticking in one corner.
 */
 
 :root{
@@ -24,14 +25,17 @@
 /* Container bar (very wide so rotation spans viewport) */
 .lightbar {
   position: fixed;
-  /* center the element in the viewport; we'll translate it from there */
+  /* center the element in the viewport; animation will translate it from there */
   top: 50%;
   left: 50%;
   width: 220vw;             /* very wide so rotated bar covers viewport */
   height: var(--bar-thickness);
   pointer-events: none;
   z-index: 0;
-  transform-origin: center;
+
+  /* Anchor scaling to the right edge so the "drawing" direction is inverted */
+  transform-origin: right center;
+
   /* start translated far to top-left and short (scaleX small) */
   transform: translate(-150%, -150%) rotate(45deg) scaleX(var(--start-scale));
   opacity: 0.95;
@@ -124,35 +128,36 @@
   border-radius: 2px;
 }
 
-/* Animation keyframes follow the sketch:
-   - 0% (Start): short segment near top-left (translate far top-left, small scaleX)
-   - 20%: lengthening as it enters
-   - 50% (Middle): long segment across center (translate near center, large scaleX)
-   - 80%: shrinking as it leaves
-   - 100% (End): short segment near bottom-right (translate far bottom-right, small scaleX)
-*/
+/* Animation keyframes (movement top-left → bottom-right).
+   Because transform-origin is right center, scaleX changes will make the visible
+   segment appear to grow/shrink from the opposite end (inverted drawing). */
 @keyframes diagonalSweep {
   0% {
+    /* short start in top-left */
     transform: translate(-150%, -150%) rotate(45deg) scaleX(var(--start-scale));
     opacity: 0.45;
   }
 
   20% {
+    /* accelerate into the scene, lengthening slightly */
     transform: translate(-60%, -60%) rotate(45deg) scaleX(calc(var(--start-scale) * 3.5));
     opacity: 0.85;
   }
 
   50% {
+    /* long middle across the viewport */
     transform: translate(0%, 0%) rotate(45deg) scaleX(var(--mid-scale));
     opacity: 1;
   }
 
   80% {
+    /* shrinking toward the end */
     transform: translate(60%, 60%) rotate(45deg) scaleX(calc(var(--start-scale) * 3.5));
     opacity: 0.85;
   }
 
   100% {
+    /* short end in bottom-right */
     transform: translate(150%, 150%) rotate(45deg) scaleX(var(--start-scale));
     opacity: 0.45;
   }
@@ -173,9 +178,8 @@
   .lightbar .cap { display: none; } /* hide caps on small screens */
 }
 
-/* If you still see the bar stuck in a corner:
-   - Ensure the .lightbar element exists in the DOM and is not nested inside an element with transforms.
-   - If you add caps as children, they must be direct children of .lightbar.
-   - The element must not have inline transforms that override these rules.
+/* Troubleshooting notes (do not include inline transforms on the element):
+   - Ensure .lightbar is a direct child of <body> and not inside an element with its own transform.
+   - If you add caps, they must be direct children of .lightbar to inherit movement/scale.
 */
 ```
