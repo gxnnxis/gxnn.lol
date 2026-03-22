@@ -1,30 +1,66 @@
 /* bar.css */
 
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  height: 100%;
+.fortnite-laser {
+  position: absolute;
+  inset: -60%;
+  pointer-events: none;
+  transform: rotate(12deg);
+  animation: fortniteLaserSweep 2.2s linear infinite;
 }
 
-/* The angled red bar */
-.bar {
-  position: fixed;
+/* core laser */
+.fortnite-laser::before {
+  content: "";
+  position: absolute;
   top: 50%;
-  left: -200vw;                 /* start far off-screen left */
-  width: 400vw;                 /* extra wide so rotation covers screen */
-  height: 120px;                /* thickness of the bar */
-  background: #ff1b1b;
-  transform: rotate(-45deg);
-  transform-origin: center;
-  animation: bar-slide 3s linear forwards;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140%;
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,27,27,0) 20%,
+    #ff1b1b 50%,
+    rgba(255,27,27,0) 80%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px #ff1b1b,
+    0 0 14px #ff1b1b,
+    0 0 28px rgba(255,27,27,.8);
 }
 
-@keyframes bar-slide {
+/* glow */
+.fortnite-laser::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140%;
+  height: 18px;
+
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,27,27,0) 15%,
+    rgba(255,27,27,.35) 50%,
+    rgba(255,27,27,0) 85%,
+    transparent 100%
+  );
+
+  filter: blur(12px);
+  opacity: .6;
+}
+
+@keyframes fortniteLaserSweep {
   from {
-    transform: translateX(0) rotate(-45deg);
+    transform: translate(-40%, -40%) rotate(12deg);
   }
   to {
-    transform: translateX(300vw) rotate(-45deg);
+    transform: translate(40%, 40%) rotate(12deg);
   }
 }
