@@ -23,7 +23,7 @@ body{
 
 /* PAGE LAYOUT */
 main{
-  max-width:1600px; /* wider container to comfortably fit 5 cards */
+  max-width:1600px; 
   margin:0 auto;
   width:100%;
 }
@@ -41,27 +41,29 @@ h1{
 /* GRID — force 5 columns on large screens, step down responsively */
 .shop-grid{
   display:grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 columns */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap:28px;
   align-items:stretch;
   padding:8px;
 }
 
-/* ITEM CARD */
+/* ============================= */
+/* ITEM CARD WITH RED GLOW & BEVEL */
 .item{
   display:flex;
   flex-direction:column;
   height:100%;
   min-height:0;
-  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+  background:var(--card-bg);
   border-radius:16px;
-  border:1px solid rgba(255,27,27,0.06);
+  border:10px solid #000; /* thick black border for bevel effect */
+  box-shadow:
+    0 0 20px var(--accent),
+    0 0 40px rgba(255,27,27,0.5),
+    inset 0 0 8px rgba(255,27,27,0.3);
   overflow:hidden;
   transition:transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s;
   position:relative;
-  box-shadow:
-    0 8px 22px rgba(0,0,0,0.65),
-    0 0 36px rgba(255,27,27,0.06);
   min-height:420px;
 }
 
@@ -70,7 +72,8 @@ h1{
   transform:translateY(-8px) scale(1.025);
   box-shadow:
     0 22px 48px rgba(0,0,0,0.75),
-    0 0 56px rgba(255,27,27,0.20);
+    0 0 56px rgba(255,27,27,0.20),
+    inset 0 0 12px rgba(255,27,27,0.4);
   outline: none;
 }
 
