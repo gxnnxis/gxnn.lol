@@ -1,12 +1,11 @@
 /* bar.css
-   Horizontal translation only, rotated 45deg.
-   - The element translates left → right (translateX) only.
-   - Because the element is rotated 45deg, that horizontal motion appears
-     as a diagonal sweep from top-left toward bottom-right.
-   - Traversal duration: 3s, linear (constant speed).
-   - Core neon line (::after) + blurred glow (::before).
-   - No translateY in the animation — only translateX changes.
-   - Place the element centered in the viewport so translateX moves it across the diagonal.
+   Horizontal-only translation, rotated -45deg so left→right motion
+   appears as a diagonal sweep from bottom-left to top-right.
+   - Animation uses translateX only (no translateY) for constant horizontal motion.
+   - Rotation is applied before translateX in the transform chain so the visual
+     sweep goes from bottom-left (start) to top-right (end).
+   - Traversal duration: 3s, linear.
+   - Neon core (::after) + blurred glow (::before).
 */
 
 :root{
@@ -19,7 +18,9 @@
   --duration: 3s; /* traversal duration */
 }
 
-/* The bar container is centered; rotation makes horizontal motion diagonal */
+/* The bar is centered; rotate first, then translateX in the animation.
+   Because rotation is -45deg, translateX left→right maps visually from
+   bottom-left to top-right. */
 .lightbar {
   position: fixed;
   top: 50%;
@@ -29,11 +30,9 @@
   pointer-events: none;
   z-index: 0;
 
-  /* center the element, then rotate it; translateX will move it along the rotated axis */
+  /* Important: center, rotate, then translateX in keyframes */
   transform-origin: center;
-  transform: translate(-50%, -50%) rotate(45deg) translateX(-120%);
-
-  /* animate only translateX (no translateY) for pure left→right motion */
+  transform: translate(-50%, -50%) rotate(-45deg) translateX(-120%);
   animation: sweepLeftToRight var(--duration) linear infinite;
 
   /* tapered core gradient so ends fade */
@@ -50,7 +49,7 @@
   opacity: 0.95;
 }
 
-/* blurred ambient glow band */
+/* blurred ambient glow */
 .lightbar::before {
   content: "";
   position: absolute;
@@ -73,7 +72,7 @@
   border-radius: 999px;
 }
 
-/* sharp neon core line on top of the glow */
+/* sharp neon core line */
 .lightbar::after {
   content: "";
   position: absolute;
@@ -115,30 +114,28 @@
   transform: translateY(-50%) rotate(-45deg);
 }
 
-/* Keyframes: only change translateX (no translateY). Because the element is rotated,
-   this horizontal motion appears as a diagonal sweep from top-left to bottom-right.
-   - start: translateX(-120%)  -> bar is off to the left (visually top-left)
-   - end:   translateX(120%)   -> bar is off to the right (visually bottom-right)
-*/
+/* Keyframes: only translateX changes (no translateY). Because the element is rotated
+   -45deg in the base transform, this horizontal motion appears as a diagonal sweep
+   from bottom-left (start) to top-right (end). */
 @keyframes sweepLeftToRight {
   0% {
-    transform: translate(-50%, -50%) rotate(45deg) translateX(-120%);
+    transform: translate(-50%, -50%) rotate(-45deg) translateX(-120%);
     opacity: 0.45;
   }
   20% {
-    transform: translate(-50%, -50%) rotate(45deg) translateX(-60%);
+    transform: translate(-50%, -50%) rotate(-45deg) translateX(-60%);
     opacity: 0.85;
   }
   50% {
-    transform: translate(-50%, -50%) rotate(45deg) translateX(0%);
+    transform: translate(-50%, -50%) rotate(-45deg) translateX(0%);
     opacity: 1;
   }
   80% {
-    transform: translate(-50%, -50%) rotate(45deg) translateX(60%);
+    transform: translate(-50%, -50%) rotate(-45deg) translateX(60%);
     opacity: 0.85;
   }
   100% {
-    transform: translate(-50%, -50%) rotate(45deg) translateX(120%);
+    transform: translate(-50%, -50%) rotate(-45deg) translateX(120%);
     opacity: 0.45;
   }
 }
@@ -149,6 +146,7 @@
     --bar-thickness: 9px;
     --core-thickness: 1.5px;
     --glow-blur: 18px;
+    --duration: 3s;
   }
   .lightbar { opacity: 0.85; }
   .lightbar::before { opacity: 0.6; filter: blur(16px); }
@@ -156,8 +154,7 @@
   .lightbar .cap { display: none; }
 }
 
-/* Notes:
+/* Troubleshooting:
    - Ensure .lightbar is a direct child of <body> and not inside an element with its own transform.
-   - If you add caps, they must be direct children of .lightbar to move with it.
-   - If you want the "drawing" (visible length) to grow/shrink while moving, add a scaleX() in the keyframes.
+   - Do not add inline transforms that override these rules.
 */
