@@ -1,256 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- SOCIAL / EMBED PREVIEW -->
-<meta property="og:title" content="gxnn.lol Item Shop">
-<meta property="og:description" content="Explore the gxnn Item Shop">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://gxnn.lol/itemshop">
-<meta property="og:image" content="https://gxnn.lol/logo.png">
+  <!-- SOCIAL / EMBED PREVIEW -->
+  <meta property="og:title" content="gxnn.lol Item Shop">
+  <meta property="og:description" content="Explore the gxnn Item Shop">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gxnn.lol/itemshop">
+  <meta property="og:image" content="https://gxnn.lol/logo.png">
 
-<title>gxnn.lol | Item Shop</title>
+  <title>gxnn.lol | Item Shop</title>
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Inter, sans-serif;
-}
+  <!-- Layout + box styling -->
+  <link rel="stylesheet" href="style.css">
 
-/* BACKGROUND */
-body {
-    background: #000000;
-    background-attachment: fixed;
-    color: white;
-    padding: 30px;
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* DIAGONAL SCANLINE */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-
-    background: linear-gradient(
-        135deg,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0) 49%,
-        rgba(120,0,0,0.15) 50%,
-        rgba(0,0,0,0) 51%,
-        rgba(0,0,0,0) 100%
-    );
-
-    background-size: 350% 350%;
-    animation: scanMove 7s linear infinite;
-
-    pointer-events: none;
-    z-index: -1;
-}
-
-@keyframes scanMove {
-    0% { background-position: 200% 200%; }
-    100% { background-position: -100% -100%; }
-}
-
-/* TITLE */
-h1 {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 32px;
-    color: #ff4d4d;
-    text-shadow: 0 0 15px rgba(150, 0, 0, 0.7);
-}
-
-/* GRID */
-.shop-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 25px;
-    max-width: 1300px;
-    margin: auto;
-}
-
-/* ITEM CARD — BLACK + RED THEME */
-.item {
-    background: #0d0d0d;
-    border: 2px solid #5a0000;
-    border-radius: 15px;
-    overflow: hidden;
-    transition: 0.25s;
-    display: flex;
-    flex-direction: column;
-
-    /* 🔥 Dark red glow */
-    box-shadow:
-        0 0 10px rgba(150, 0, 0, 0.55),
-        0 0 20px rgba(150, 0, 0, 0.35),
-        0 0 30px rgba(150, 0, 0, 0.25);
-}
-
-.item:hover {
-    transform: scale(1.04);
-    box-shadow:
-        0 0 15px rgba(200, 0, 0, 0.7),
-        0 0 30px rgba(200, 0, 0, 0.45),
-        0 0 45px rgba(200, 0, 0, 0.35);
-}
-
-/* TAGS */
-.tag {
-    background: #8b0000;
-    padding: 6px 10px;
-    font-size: 14px;
-    font-weight: 700;
-    width: fit-content;
-    border-radius: 0 0 6px 0;
-}
-
-/* IMAGE */
-.item-image {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: rgba(0,0,0,0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.item-image img {
-    width: 90%;
-    height: 90%;
-    object-fit: contain;
-}
-
-/* INFO */
-.info {
-    padding: 15px;
-    text-align: center;
-}
-
-.item-name {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: #ff4d4d;
-}
-
-/* PRICE */
-.price {
-    font-size: 18px;
-    font-weight: 700;
-    color: #ff4d4d;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-}
-
-.price img {
-    width: 22px;
-    height: 22px;
-}
-
-/* OLD PRICE */
-.old-price {
-    text-decoration: line-through;
-    opacity: 0.6;
-    margin-left: 6px;
-    font-size: 16px;
-}
-
-/* MOBILE FIX */
-@media (max-width: 500px) {
-    .item-image {
-        aspect-ratio: 1 / 1.2;
-    }
-}
-</style>
+  <!-- Lightbar animation -->
+  <link rel="stylesheet" href="bar.css">
 </head>
 
 <body>
 
-<h1>gxnn.lol Item Shop</h1>
+  <!-- Ambient lightbar (styled in bar.css) -->
+  <div class="lightbar" aria-hidden="true"></div>
 
-<div class="shop-grid">
+  <main>
+    <h1>gxnn.lol Item Shop</h1>
 
-    <!-- ITEM TEMPLATE -->
-    <div class="item">
+    <section class="shop-grid" aria-label="Item shop grid">
+
+      <!-- ITEM 1 -->
+      <article class="item" role="group" aria-labelledby="item-diddy">
         <div class="tag">BABY OIL</div>
-        <div class="item-image">
-            <img src="items/diddy.webp" alt="Item Image">
+        <div class="item-image" aria-hidden="true">
+          <img src="items/diddy.webp" alt="Diddy item image">
         </div>
         <div class="info">
-            <div class="item-name">Diddy</div>
-            <div class="price">
-                <img src="vbuck.webp" alt="V-Bucks">
-                6700
-            </div>
+          <div id="item-diddy" class="item-name">Diddy</div>
+          <div class="price">
+            <img src="vbuck.webp" alt="V-Bucks icon">
+            6700
+          </div>
         </div>
-    </div>
+      </article>
 
-    <div class="item">
+      <!-- ITEM 2 -->
+      <article class="item" role="group" aria-labelledby="item-rpg">
         <div class="tag" style="background:#8b0000;">HES MAD AS FUCK RN</div>
-        <div class="item-image">
-            <img src="items/rpg.webp" alt="Item Image">
+        <div class="item-image" aria-hidden="true">
+          <img src="items/rpg.webp" alt="RPG item image">
         </div>
         <div class="info">
-            <div class="item-name">RPG</div>
-            <div class="price">
-                <img src="vbuck.webp" alt="V-Bucks">
-                FREE
-                <span class="old-price">HELLA FUNDS NIGGA</span>
-            </div>
+          <div id="item-rpg" class="item-name">RPG</div>
+          <div class="price">
+            <img src="vbuck.webp" alt="V-Bucks icon">
+            FREE
+            <span class="old-price">HELLA FUNDS NIGGA</span>
+          </div>
         </div>
-    </div>
+      </article>
 
-    <div class="item">
-        <div class="tag" style="background:#aa5500;">HOLY FUCK ITS LSJ?</div>
-        <div class="item-image">
-            <img src="items/lsj.webp" alt="Item Image">
+      <!-- ITEM 3 -->
+      <article class="item" role="group" aria-labelledby="item-lsj">
+        <div class="tag" style="background:#aa5500;">HOLY FUCKS ITS LSJ</div>
+        <div class="item-image" aria-hidden="true">
+          <img src="items/lsj.webp" alt="The Island item image">
         </div>
         <div class="info">
-            <div class="item-name">The Island</div>
-            <div class="price">
-                <img src="vbuck.webp" alt="V-Bucks">
-                SO MANY FUNDS
-            </div>
+          <div id="item-lsj" class="item-name">The Island</div>
+          <div class="price">
+            <img src="vbuck.webp" alt="V-Bucks icon">
+            SO MANY FUNDS
+          </div>
         </div>
-    </div>
+      </article>
 
-    <div class="item">
+      <!-- ITEM 4 -->
+      <article class="item" role="group" aria-labelledby="item-11">
         <div class="tag">FREAKY ASS NIGGA</div>
-        <div class="item-image">
-            <img src="items/11.png" alt="Item Image">
+        <div class="item-image" aria-hidden="true">
+          <img src="items/11.png" alt="11 item image">
         </div>
         <div class="info">
-            <div class="item-name">11</div>
-            <div class="price">
-                <img src="vbuck.webp" alt="V-Bucks">
-                11
-            </div>
+          <div id="item-11" class="item-name">11</div>
+          <div class="price">
+            <img src="vbuck.webp" alt="V-Bucks icon">
+            11
+          </div>
         </div>
-    </div>
+      </article>
 
-    <div class="item">
+      <!-- ITEM 5 -->
+      <article class="item" role="group" aria-labelledby="item-opsec">
         <div class="tag" style="background:#aa5500;">HOLY SHIT ITS MULLVAD</div>
-        <div class="item-image">
-            <img src="items/opsec.webp" alt="Item Image">
+        <div class="item-image" aria-hidden="true">
+          <img src="items/opsec.webp" alt="Opsec item image">
         </div>
         <div class="info">
-            <div class="item-name">Opsec</div>
-            <div class="price">
-                <img src="vbuck.webp" alt="V-Bucks">
-                Too many funds.
-            </div>
+          <div id="item-opsec" class="item-name">Opsec</div>
+          <div class="price">
+            <img src="vbuck.webp" alt="V-Bucks icon">
+            Too many funds
+          </div>
         </div>
-    </div>
+      </article>
 
-</div>
+    </section>
+  </main>
 
 </body>
 </html>
