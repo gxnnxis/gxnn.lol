@@ -42,7 +42,7 @@
       z-index: 1;
     }
 
-    /* 🔥 MOVING LIGHT — NOW BEHIND VIDEO */
+    /* 🔥 MOVING LIGHT — BEHIND VIDEO */
     .video-wrapper::after {
       content: "";
       position: absolute;
@@ -69,7 +69,7 @@
       }
     }
 
-    /* Outer glow ring — stays behind everything */
+    /* Outer glow ring — behind everything */
     .video-wrapper::before {
       content: "";
       position: absolute;
@@ -78,7 +78,7 @@
       background: conic-gradient(from 180deg, #ff2a2a, #000000, #ff2a2a);
       opacity: 0.45;
       filter: blur(16px);
-      z-index: -1; /* BEHIND MOVING LIGHT */
+      z-index: -1;
     }
 
     video {
@@ -106,7 +106,8 @@
 <body>
   <div class="video-wrapper">
     <video controls autoplay muted loop>
-      <source src="nn123.mp4" type="video/mp4" />
+      <!-- 🔥 Replace this with your Streamable DIRECT MP4 link -->
+      <source src="https://cdn-cf-east.streamable.com/video/mp4/j2dpo9.mp4?Expires=1774402738842&Key-Pair-Id=APKAIEYUVEN4EVB2OKEQ&Signature=WToiSC4iB7adhBuOmZWiVktRBPF9n59wlre3rLH2zCdC8WKgOObnNSHq78Tkp3e-UuEy33Bs3Lp7E4SImN2W0663Zrq6ButqV0UzYzVi1y5WepYoe~qf0QtPVUAvc4K14pQre1mGx6Qk6FGfplbUaDAHjvpnedGjf1A51ZiVg4SB~2K5e6E35eX3OPHpazWPCQIKqF0dA7LqiwMoxHulLp7zbOCJa-UaIgnF1gHt5Ez7Mn-JLN-538KTni~RDv16rhQJx6s6TA-uzUCqs1qhiwAEJbTWfCYUfEHX78M3lLxQAancFloDqaywyEHXz6hZjoRuvxd9oDspTfi8-BA1mA__" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   </div>
