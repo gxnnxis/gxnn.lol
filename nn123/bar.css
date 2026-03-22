@@ -1,66 +1,36 @@
-/* bar.css */
+/* =============================== */
+/* Fortnite-style Red Laser Lightbar */
+/* =============================== */
 
-.fortnite-laser {
+/* LIGHTBAR ANIMATION */
+.lightbar {
   position: absolute;
-  inset: -60%;
-  pointer-events: none;
-  transform: rotate(12deg);
-  animation: fortniteLaserSweep 2.2s linear infinite;
+  top: -50%;          /* start above the container */
+  left: -50%;         /* start left of the container */
+  width: 200%;        /* long enough to cover diagonally */
+  height: 4px;        /* thin laser-like line */
+  background: #ff1b1b;
+  box-shadow: 0 0 12px #ff1b1b, 0 0 24px rgba(255,27,27,0.5);
+  transform: rotate(45deg); /* diagonal */
+  opacity: 0.8;
+  z-index: 1;         /* behind video (video z-index:2) */
+  animation: moveLight 2s linear infinite;
 }
 
-/* core laser */
-.fortnite-laser::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 140%;
-  height: 2px;
-
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255,27,27,0) 20%,
-    #ff1b1b 50%,
-    rgba(255,27,27,0) 80%,
-    transparent 100%
-  );
-
-  box-shadow:
-    0 0 6px #ff1b1b,
-    0 0 14px #ff1b1b,
-    0 0 28px rgba(255,27,27,.8);
-}
-
-/* glow */
-.fortnite-laser::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 140%;
-  height: 18px;
-
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255,27,27,0) 15%,
-    rgba(255,27,27,.35) 50%,
-    rgba(255,27,27,0) 85%,
-    transparent 100%
-  );
-
-  filter: blur(12px);
-  opacity: .6;
-}
-
-@keyframes fortniteLaserSweep {
-  from {
-    transform: translate(-40%, -40%) rotate(12deg);
+/* Keyframes for diagonal motion */
+@keyframes moveLight {
+  0% {
+    transform: translate(-100%, -100%) rotate(45deg);
   }
-  to {
-    transform: translate(40%, 40%) rotate(12deg);
+  100% {
+    transform: translate(100%, 100%) rotate(45deg);
+  }
+}
+
+/* OPTIONAL: slightly thicker glow for larger screens */
+@media (min-width: 600px) {
+  .lightbar {
+    height: 6px;
+    box-shadow: 0 0 18px #ff1b1b, 0 0 36px rgba(255,27,27,0.5);
   }
 }
