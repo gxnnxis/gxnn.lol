@@ -1,21 +1,30 @@
 /* bar.css */
 
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* The angled red bar */
 .bar {
   position: fixed;
   top: 50%;
-  left: -150vw;              /* start off-screen left */
-  width: 300vw;              /* extra wide so angle covers screen */
-  height: 80px;
+  left: -200vw;                 /* start far off-screen left */
+  width: 400vw;                 /* extra wide so rotation covers screen */
+  height: 120px;                /* thickness of the bar */
   background: #ff1b1b;
   transform: rotate(-45deg);
-  animation: slideBar 3s linear forwards;
+  transform-origin: center;
+  animation: bar-slide 3s linear forwards;
 }
 
-@keyframes slideBar {
+@keyframes bar-slide {
   from {
     transform: translateX(0) rotate(-45deg);
   }
   to {
-    transform: translateX(200vw) rotate(-45deg);
+    transform: translateX(300vw) rotate(-45deg);
   }
 }
