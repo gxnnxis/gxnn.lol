@@ -1,8 +1,8 @@
 /* bar.css
    Diagonal sweeping bar that travels from top-left to bottom-right.
-   - Movement: starts at top-left and moves to bottom-right.
-   - Drawing direction inverted by anchoring scale to the right edge,
-     so the visible segment appears to extend/erase from the opposite end.
+   - Traversal across the viewport takes exactly 1.5s at a constant (linear) rate.
+   - Movement direction: starts at top-left and moves to bottom-right.
+   - Drawing direction inverted by anchoring scale to the right edge (scaleX grows/shrinks from the right).
    - Soft blurred glow (::before) and sharp neon core (::after).
    - Optional triangular caps supported if you add two spans inside the .lightbar element.
 */
@@ -14,7 +14,7 @@
   --bar-thickness: 12px;    /* visible band thickness */
   --core-thickness: 2px;    /* sharp neon line thickness */
   --glow-blur: 28px;
-  --anim-duration: 7s;
+  --anim-duration: 1.5s;    /* traversal duration set to 1.5 seconds */
   --start-scale: 0.18;      /* short at start/end */
   --mid-scale: 1.6;         /* long in middle */
 }
@@ -36,7 +36,9 @@
   /* start translated far to top-left and short (scaleX small) */
   transform: translate(-150%, -150%) rotate(45deg) scaleX(var(--start-scale));
   opacity: 0.95;
-  animation: diagonalSweep var(--anim-duration) cubic-bezier(0.55,0.03,0.25,1) infinite;
+
+  /* Use linear timing for constant traversal speed */
+  animation: diagonalSweep var(--anim-duration) linear infinite;
 
   /* center-strong gradient with transparent tapered ends to simulate pointed tips */
   background:
@@ -127,7 +129,9 @@
 
 /* Animation keyframes (movement top-left → bottom-right).
    Because transform-origin is right center, scaleX changes will make the visible
-   segment appear to grow/shrink from the opposite end (inverted drawing). */
+   segment appear to grow/shrink from the opposite end (inverted drawing).
+   Using linear timing ensures the bar's translation across the viewport is at a constant rate.
+*/
 @keyframes diagonalSweep {
   0% {
     /* short start in top-left */
@@ -135,8 +139,8 @@
     opacity: 0.45;
   }
 
-  20% {
-    /* accelerate into the scene, lengthening slightly */
+  25% {
+    /* lengthening as it enters */
     transform: translate(-60%, -60%) rotate(45deg) scaleX(calc(var(--start-scale) * 3.5));
     opacity: 0.85;
   }
@@ -147,8 +151,8 @@
     opacity: 1;
   }
 
-  80% {
-    /* shrinking toward the end */
+  75% {
+    /* shrinking as it leaves */
     transform: translate(60%, 60%) rotate(45deg) scaleX(calc(var(--start-scale) * 3.5));
     opacity: 0.85;
   }
@@ -168,6 +172,7 @@
     --glow-blur: 18px;
     --start-scale: 0.20;
     --mid-scale: 1.2;
+    --anim-duration: 1.5s; /* keep traversal time the same on small screens */
   }
   .lightbar { opacity: 0.85; }
   .lightbar::before { opacity: 0.6; filter: blur(16px); }
@@ -175,7 +180,8 @@
   .lightbar .cap { display: none; } /* hide caps on small screens */
 }
 
-/* Troubleshooting notes (do not include inline transforms on the element):
-   - Ensure .lightbar is a direct child of <body> and not inside an element with its own transform.
+/* Troubleshooting notes:
+   - Ensure the .lightbar element is a direct child of <body> and not inside an element with its own transform.
+   - Do not add inline transforms that override these rules.
    - If you add caps, they must be direct children of .lightbar to inherit movement/scale.
 */
