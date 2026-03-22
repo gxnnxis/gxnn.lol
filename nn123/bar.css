@@ -1,12 +1,12 @@
+
 /* bar.css
-   Diagonal sweeping bar that travels from top-left to bottom-right,
-   with a short start, long middle, and short end as in the provided sketch.
+   Diagonal sweeping bar that travels from top-left to bottom-right.
    - The bar is a long, thin element rotated 45deg.
-   - It scales horizontally (scaleX) from short → long → short while translating,
-     so the visible segment grows in the middle and shrinks at the ends.
+   - It grows short → long → short (start, middle, end) while translating across the screen.
    - Soft blurred glow (::before) and sharp neon core (::after).
-   - Tapered visual ends via gradient so the left end visually points toward bottom-left
-     and the right end visually points toward top-right while the bar is rotated.
+   - Optional triangular caps supported if you add two spans inside the .lightbar element.
+   - This version positions the bar centered in the viewport and animates its translate
+     so it reliably moves from top-left to bottom-right instead of sticking in one corner.
 */
 
 :root{
@@ -17,19 +17,23 @@
   --core-thickness: 2px;    /* sharp neon line thickness */
   --glow-blur: 28px;
   --anim-duration: 7s;
+  --start-scale: 0.18;      /* short at start/end */
+  --mid-scale: 1.6;         /* long in middle */
 }
 
 /* Container bar (very wide so rotation spans viewport) */
 .lightbar {
   position: fixed;
-  top: -40vh;               /* start off-screen top-left */
-  left: -60vw;
+  /* center the element in the viewport; we'll translate it from there */
+  top: 50%;
+  left: 50%;
   width: 220vw;             /* very wide so rotated bar covers viewport */
   height: var(--bar-thickness);
   pointer-events: none;
   z-index: 0;
-  transform-origin: left center; /* scaleX grows to the right from the left end */
-  transform: rotate(45deg) translateX(-120%) scaleX(0.25);
+  transform-origin: center;
+  /* start translated far to top-left and short (scaleX small) */
+  transform: translate(-150%, -150%) rotate(45deg) scaleX(var(--start-scale));
   opacity: 0.95;
   animation: diagonalSweep var(--anim-duration) cubic-bezier(0.55,0.03,0.25,1) infinite;
 
@@ -89,59 +93,9 @@
   pointer-events: none;
 }
 
-/* Animation keyframes follow the sketch:
-   - 0% (Start): short segment near top-left (small scaleX, translateX far left)
-   - 50% (Middle): long segment across center (large scaleX, translateX near center)
-   - 100% (End): short segment near bottom-right (small scaleX, translateX far right)
-*/
-@keyframes diagonalSweep {
-  0% {
-    /* short start in top-left */
-    transform: rotate(45deg) translateX(-120%) scaleX(0.18);
-    opacity: 0.45;
-  }
-
-  20% {
-    /* accelerate into the scene, lengthening slightly */
-    transform: rotate(45deg) translateX(-60%) scaleX(0.6);
-    opacity: 0.85;
-  }
-
-  50% {
-    /* long middle across the viewport */
-    transform: rotate(45deg) translateX(-6%) scaleX(1.6);
-    opacity: 1;
-  }
-
-  80% {
-    /* shrinking toward the end */
-    transform: rotate(45deg) translateX(40%) scaleX(0.6);
-    opacity: 0.85;
-  }
-
-  100% {
-    /* short end in bottom-right */
-    transform: rotate(45deg) translateX(120%) scaleX(0.18);
-    opacity: 0.45;
-  }
-}
-
-/* Reduce intensity on small screens so it doesn't overwhelm content */
-@media (max-width: 800px) {
-  :root {
-    --bar-thickness: 9px;
-    --core-thickness: 1.5px;
-    --glow-blur: 18px;
-  }
-  .lightbar { opacity: 0.85; }
-  .lightbar::before { opacity: 0.6; filter: blur(16px); }
-  .lightbar::after { box-shadow: 0 0 6px var(--glow-color), 0 0 14px rgba(255,27,27,0.5); }
-}
-
-/* Optional: if you want sharper triangular caps, add two spans inside the .lightbar:
-     <div class="lightbar"><span class="cap cap-left"></span><span class="cap cap-right"></span></div>
-   and use the CSS below to style them. They will move and scale with the bar because they are children. */
-
+/* Optional triangular caps if you add two spans inside the .lightbar:
+   <div class="lightbar"><span class="cap cap-left"></span><span class="cap cap-right"></span></div>
+   They will move and scale with the bar because they are children. */
 .lightbar .cap {
   position: absolute;
   width: 44px;
@@ -170,7 +124,58 @@
   border-radius: 2px;
 }
 
-/* Hide caps on small screens to reduce clutter */
-@media (max-width: 800px) {
-  .lightbar .cap { display: none; }
+/* Animation keyframes follow the sketch:
+   - 0% (Start): short segment near top-left (translate far top-left, small scaleX)
+   - 20%: lengthening as it enters
+   - 50% (Middle): long segment across center (translate near center, large scaleX)
+   - 80%: shrinking as it leaves
+   - 100% (End): short segment near bottom-right (translate far bottom-right, small scaleX)
+*/
+@keyframes diagonalSweep {
+  0% {
+    transform: translate(-150%, -150%) rotate(45deg) scaleX(var(--start-scale));
+    opacity: 0.45;
+  }
+
+  20% {
+    transform: translate(-60%, -60%) rotate(45deg) scaleX(calc(var(--start-scale) * 3.5));
+    opacity: 0.85;
+  }
+
+  50% {
+    transform: translate(0%, 0%) rotate(45deg) scaleX(var(--mid-scale));
+    opacity: 1;
+  }
+
+  80% {
+    transform: translate(60%, 60%) rotate(45deg) scaleX(calc(var(--start-scale) * 3.5));
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: translate(150%, 150%) rotate(45deg) scaleX(var(--start-scale));
+    opacity: 0.45;
+  }
 }
+
+/* Reduce intensity on small screens so it doesn't overwhelm content */
+@media (max-width: 800px) {
+  :root {
+    --bar-thickness: 9px;
+    --core-thickness: 1.5px;
+    --glow-blur: 18px;
+    --start-scale: 0.20;
+    --mid-scale: 1.2;
+  }
+  .lightbar { opacity: 0.85; }
+  .lightbar::before { opacity: 0.6; filter: blur(16px); }
+  .lightbar::after { box-shadow: 0 0 6px var(--glow-color), 0 0 14px rgba(255,27,27,0.5); }
+  .lightbar .cap { display: none; } /* hide caps on small screens */
+}
+
+/* If you still see the bar stuck in a corner:
+   - Ensure the .lightbar element exists in the DOM and is not nested inside an element with transforms.
+   - If you add caps as children, they must be direct children of .lightbar.
+   - The element must not have inline transforms that override these rules.
+*/
+```
