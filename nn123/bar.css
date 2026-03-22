@@ -1,6 +1,3 @@
-### bar.css
-
-```css
 /* bar.css
    Diagonal sweeping bar that travels from top-left to bottom-right.
    - Movement: starts at top-left and moves to bottom-right.
@@ -182,4 +179,3 @@
    - Ensure .lightbar is a direct child of <body> and not inside an element with its own transform.
    - If you add caps, they must be direct children of .lightbar to inherit movement/scale.
 */
-```
