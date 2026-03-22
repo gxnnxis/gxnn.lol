@@ -1,7 +1,7 @@
 /* bar.css
-   Diagonal light bar sweeping LEFT → RIGHT
-   Angle: -45deg (bottom-left → top-right)
-   Duration: 3s across entire screen
+   Horizontal sweep LEFT → RIGHT
+   Bar angled -45deg (bottom-left → top-right)
+   3 seconds across full screen
 */
 
 :root{
@@ -16,24 +16,25 @@
   --duration: 3s;
 }
 
-/* Main sweeping bar */
 .lightbar {
   position: fixed;
   top: 50%;
-  left: -140vw;              /* start fully offscreen left */
-  width: 280vw;              /* long enough for diagonal coverage */
+  left: 50%;
+
+  width: 240vw;
   height: var(--bar-thickness);
 
   pointer-events: none;
   z-index: 0;
 
-  transform: rotate(-45deg);
   transform-origin: center;
+
+  /* start off-screen left */
+  transform: translate(-50%, -50%) rotate(-45deg) translateX(-140vw);
 
   animation: sweepLeftToRight var(--duration) linear infinite;
   will-change: transform;
 
-  /* tapered laser gradient */
   background: linear-gradient(
     90deg,
     rgba(255,27,27,0) 0%,
@@ -50,7 +51,7 @@
   opacity: 0.95;
 }
 
-/* blurred glow */
+/* glow */
 .lightbar::before {
   content: "";
   position: absolute;
@@ -73,12 +74,10 @@
 
   filter: blur(var(--glow-blur));
   opacity: 0.75;
-
   border-radius: 999px;
-  pointer-events: none;
 }
 
-/* sharp neon core */
+/* core */
 .lightbar::after {
   content: "";
   position: absolute;
@@ -96,41 +95,24 @@
   box-shadow:
     0 0 10px var(--glow-color),
     0 0 22px rgba(255,27,27,0.55);
-
-  pointer-events: none;
 }
 
-/* LEFT → RIGHT sweep */
+/* horizontal movement */
 @keyframes sweepLeftToRight {
-  from {
-    transform: rotate(-45deg) translateX(0);
+  0% {
+    transform: translate(-50%, -50%) rotate(-45deg) translateX(-140vw);
   }
-  to {
-    transform: rotate(-45deg) translateX(280vw);
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-45deg) translateX(140vw);
   }
 }
 
-/* Mobile tuning */
+/* mobile */
 @media (max-width: 800px) {
   :root {
     --bar-thickness: 9px;
     --core-thickness: 1.5px;
     --glow-blur: 18px;
-    --duration: 3s;
-  }
-
-  .lightbar {
-    opacity: 0.85;
-  }
-
-  .lightbar::before {
-    opacity: 0.6;
-    filter: blur(16px);
-  }
-
-  .lightbar::after {
-    box-shadow:
-      0 0 6px var(--glow-color),
-      0 0 14px rgba(255,27,27,0.5);
   }
 }
