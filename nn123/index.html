@@ -4,32 +4,34 @@
   <meta charset="UTF-8" />
   <title>nn123</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SOCIAL / EMBED PREVIEW -->
+  <meta property="og:title" content="gxnn.lol highlightz">
+  <meta property="og:description" content="Explore the nn123 highlights">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gxnn.lol/nn123">
+  <meta property="og:image" content="https://gxnn.lol/nn123/preview.png">
+
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-            <!-- SOCIAL / EMBED PREVIEW -->
-<meta property="og:title" content="gxnn.lol highlightz">
-<meta property="og:description" content="Explore the nn123 highlights">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://gxnn.lol/nn123">
-<meta property="og:image" content="https://gxnn.lol/nn123.mp4">
 
     body {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #050505;
+      background: #000; /* PURE BLACK */
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     .video-wrapper {
       position: relative;
-      width: 92vw;          /* 🔥 bigger video */
-      max-width: 1800px;    /* allows huge screens to go BIG */
+      width: 92vw;
+      max-width: 1800px;
       padding: 12px;
       border-radius: 22px;
       background: radial-gradient(circle at top left, #ff1b1b, #000000 55%);
@@ -37,9 +39,10 @@
       box-shadow:
         0 0 45px rgba(255, 0, 0, 0.9),
         0 0 100px rgba(0, 0, 0, 1);
+      z-index: 1;
     }
 
-    /* 🔥 MOVING LIGHT EFFECT */
+    /* 🔥 MOVING LIGHT — NOW BEHIND VIDEO */
     .video-wrapper::after {
       content: "";
       position: absolute;
@@ -47,13 +50,14 @@
       border-radius: 22px;
       background: linear-gradient(
         120deg,
-        rgba(255, 40, 40, 0.25),
+        rgba(255, 0, 0, 0.35),
         rgba(0, 0, 0, 0.1),
-        rgba(255, 40, 40, 0.25)
+        rgba(255, 0, 0, 0.35)
       );
       mix-blend-mode: screen;
       animation: lightMove 6s ease-in-out infinite alternate;
       pointer-events: none;
+      z-index: 0; /* BEHIND VIDEO */
     }
 
     @keyframes lightMove {
@@ -65,7 +69,7 @@
       }
     }
 
-    /* Outer glow */
+    /* Outer glow ring — stays behind everything */
     .video-wrapper::before {
       content: "";
       position: absolute;
@@ -74,7 +78,7 @@
       background: conic-gradient(from 180deg, #ff2a2a, #000000, #ff2a2a);
       opacity: 0.45;
       filter: blur(16px);
-      z-index: -1;
+      z-index: -1; /* BEHIND MOVING LIGHT */
     }
 
     video {
@@ -83,12 +87,13 @@
       border-radius: 16px;
       background: #000;
       display: block;
+      position: relative;
+      z-index: 2; /* ALWAYS ON TOP */
     }
 
-    /* Mobile scaling */
     @media (max-width: 600px) {
       .video-wrapper {
-        width: 97vw;        /* nearly full screen on mobile */
+        width: 97vw;
         padding: 8px;
       }
       video {
@@ -97,6 +102,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="video-wrapper">
     <video controls autoplay muted loop>
