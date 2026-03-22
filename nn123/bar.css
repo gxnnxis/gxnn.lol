@@ -1,101 +1,194 @@
 /* bar.css
-   Diagonal sweeping bar (full-width diagonal stripe with core + glow)
-   Replaces the small dot with a long diagonal bar that sweeps across the screen.
+   Diagonal sweeping bar (long diagonal stripe with pointed ends)
+   - Moves from top-left to bottom-right across the viewport
+   - Core neon line + soft glow
+   - Pointed bottom-left cap and pointed top-right cap
 */
 
+:root{
+  --core-color: #ff1b1b;
+  --glow-color: rgba(255,27,27,0.9);
+  --glow-weak: rgba(255,27,27,0.18);
+  --bar-thickness: 10px;    /* visible core thickness */
+  --core-height: 2px;       /* sharp core line inside the glow */
+  --cap-size: 36px;         /* size of the pointed caps */
+}
+
+/* Container that spans and is rotated to run diagonally */
 .lightbar {
   position: fixed;
-  /* start well off-screen so rotation covers the viewport diagonally */
-  top: -30vh;
-  left: -50vw;
+  /* place start well off-screen top-left so animation enters from outside */
+  top: -40vh;
+  left: -60vw;
 
-  /* very wide so the rotated bar spans the viewport */
-  width: 200vw;
-  height: 10px;                     /* core thickness */
+  /* make the element very wide so rotation covers the viewport diagonally */
+  width: 220vw;
+  height: var(--bar-thickness);
   pointer-events: none;
-  z-index: 0;                       /* behind content */
+  z-index: 0;
 
-  /* subtle base gradient so edges fade out */
+  /* soft gradient core so edges fade */
   background: linear-gradient(
     90deg,
-    rgba(255, 27, 27, 0) 0%,
-    rgba(255, 27, 27, 1) 50%,
-    rgba(255, 27, 27, 0) 100%
+    rgba(255,27,27,0) 0%,
+    rgba(255,27,27,0.98) 50%,
+    rgba(255,27,27,0) 100%
   );
 
-  transform: rotate(45deg) translateX(-120%);
+  /* rotate so the element runs from top-left toward bottom-right */
   transform-origin: center;
+  transform: rotate(45deg) translateX(-120%);
   opacity: 0.95;
+
+  /* subtle outer glow */
+  box-shadow: 0 0 40px var(--glow-weak), 0 0 100px rgba(0,0,0,0.6);
+
+  /* animate the translateX value to sweep across the screen */
   animation: diagonalSweep 7s cubic-bezier(0.55, 0.03, 0.25, 1) infinite;
 }
 
-/* blurred glow layer */
+/* heavy blurred glow layer */
 .lightbar::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 999px;
-
-  /* heavy blur for the ambient glow */
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: calc(var(--bar-thickness) * 6); /* large blur band */
+  transform: translateY(-50%);
   background: linear-gradient(
     90deg,
-    rgba(255, 27, 27, 0) 0%,
-    rgba(255, 27, 27, 0.95) 50%,
-    rgba(255, 27, 27, 0) 100%
+    rgba(255,27,27,0) 0%,
+    rgba(255,27,27,0.95) 50%,
+    rgba(255,27,27,0) 100%
   );
-  filter: blur(22px);
-  opacity: 0.75;
+  filter: blur(26px);
+  opacity: 0.78;
   pointer-events: none;
+  border-radius: 999px;
 }
 
-/* sharp core line on top of the glow for a neon effect */
+/* sharp neon core line on top of the glow */
 .lightbar::after {
   content: "";
   position: absolute;
   left: 0;
-  right: 0;
   top: 50%;
-  height: 2px;                      /* sharp core thickness */
+  width: 100%;
+  height: var(--core-height);
   transform: translateY(-50%);
-  background: #ff1b1b;              /* exact red */
+  background: var(--core-color);
   border-radius: 2px;
   box-shadow:
-    0 0 8px rgba(255, 27, 27, 0.9),
-    0 0 20px rgba(255, 27, 27, 0.6);
+    0 0 10px var(--glow-color),
+    0 0 22px rgba(255,27,27,0.55);
   pointer-events: none;
 }
 
-/* Sweep animation: move the rotated bar across the screen, with a slight scale pulse */
+/* Left cap (bottom-left pointing) */
+.lightbar .cap-left,
+.lightbar .cap-right { display: none; } /* fallback if pseudo-elements not desired */
+
+/* Use pseudo-elements for pointed caps so they move with the bar */
+.lightbar > .cap-left,
+.lightbar > .cap-right { display: none; }
+
+/* Instead create caps using additional pseudo-elements on the container */
+.lightbar::marker { /* noop to avoid some linters complaining */ }
+
+/* Pointed cap at the left end (this will visually point toward bottom-left) */
+.lightbar .cap-left-trick {}
+
+/* We'll implement the caps using two extra absolutely-positioned pseudo elements
+   anchored to the left and right edges of the long bar. They are triangles created
+   with clip-path and rotated to align with the bar's 45deg rotation. */
+.lightbar::nth-line-left,
+.lightbar::nth-line-right {}
+
+/* Because ::before and ::after are already used, create caps using an inner wrapper.
+   For broad compatibility we add them as children in HTML if possible. If not,
+   the following CSS uses an extra technique: two radial-gradients positioned at ends
+   to simulate tapered points. */
+
+/* tapered points simulated with gradients at the ends */
+.lightbar {
+  background:
+    /* left tapered point (fades to transparent toward left) */
+    linear-gradient(90deg,
+      rgba(255,27,27,0) 0%,
+      rgba(255,27,27,0.9) 12%,
+      rgba(255,27,27,0.95) 50%,
+      rgba(255,27,27,0.9) 88%,
+      rgba(255,27,27,0) 100%),
+    /* overlay to keep center strong */
+    linear-gradient(90deg, rgba(255,27,27,0) 0%, rgba(255,27,27,0) 100%);
+  background-blend-mode: normal;
+}
+
+/* Create explicit triangular caps using additional pseudo-elements via a wrapper.
+   If you can add markup, place two empty spans inside the .lightbar:
+     <div class="lightbar"><span class="cap cap-left"></span><span class="cap cap-right"></span></div>
+   The CSS below styles those spans. If you cannot add markup, the visual taper above will still provide a pointed feel. */
+
+.lightbar .cap {
+  position: absolute;
+  width: var(--cap-size);
+  height: var(--cap-size);
+  pointer-events: none;
+  top: 50%;
+  transform: translateY(-50%);
+  filter: drop-shadow(0 8px 20px rgba(255,27,27,0.12));
+}
+
+/* bottom-left pointing cap (placed at the left edge of the long bar) */
+.lightbar .cap-left {
+  left: -6px; /* slightly overlap so it looks seamless */
+  clip-path: polygon(100% 0, 0 50%, 100% 100%); /* triangle pointing left */
+  background: linear-gradient(180deg, rgba(255,27,27,0.95), rgba(255,27,27,0.6));
+  transform-origin: center;
+  /* rotate so the triangle points toward bottom-left when the bar is rotated 45deg */
+  transform: translateY(-50%) rotate(-45deg);
+  border-radius: 2px;
+  box-shadow: 0 0 18px rgba(255,27,27,0.45);
+}
+
+/* top-right pointing cap (placed at the right edge of the long bar) */
+.lightbar .cap-right {
+  right: -6px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%); /* triangle pointing right */
+  background: linear-gradient(180deg, rgba(255,27,27,0.95), rgba(255,27,27,0.6));
+  transform-origin: center;
+  /* rotate so the triangle points toward top-right when the bar is rotated 45deg */
+  transform: translateY(-50%) rotate(-45deg);
+  border-radius: 2px;
+  box-shadow: 0 0 18px rgba(255,27,27,0.45);
+}
+
+/* Sweep animation: translateX moves the rotated bar along the diagonal */
 @keyframes diagonalSweep {
   0% {
-    transform: rotate(45deg) translateX(-120%) scaleX(0.9);
-    opacity: 0.45;
+    transform: rotate(45deg) translateX(-120%) scaleX(0.95);
+    opacity: 0.35;
   }
   35% {
-    transform: rotate(45deg) translateX(-10%) scaleX(1.25);
-    opacity: 0.95;
+    transform: rotate(45deg) translateX(-10%) scaleX(1.15);
+    opacity: 0.98;
   }
   65% {
     transform: rotate(45deg) translateX(10%) scaleX(1.05);
-    opacity: 0.95;
+    opacity: 0.98;
   }
   100% {
-    transform: rotate(45deg) translateX(120%) scaleX(0.85);
-    opacity: 0.45;
+    transform: rotate(45deg) translateX(120%) scaleX(0.9);
+    opacity: 0.35;
   }
 }
 
-/* Optional: reduce intensity on small screens so it doesn't overwhelm content */
+/* Small-screen adjustments */
 @media (max-width: 600px) {
-  .lightbar {
-    height: 8px;
-  }
-  .lightbar::before {
-    filter: blur(16px);
-    opacity: 0.6;
-  }
-  .lightbar::after {
-    height: 1.5px;
-    box-shadow: 0 0 6px rgba(255, 27, 27, 0.9), 0 0 14px rgba(255, 27, 27, 0.5);
-  }
+  :root { --bar-thickness: 8px; --core-height: 1.5px; --cap-size: 26px; }
+  .lightbar::before { filter: blur(18px); opacity: 0.6; }
+  .lightbar::after { box-shadow: 0 0 6px rgba(255,27,27,0.9), 0 0 14px rgba(255,27,27,0.5); }
+  .lightbar .cap-left,
+  .lightbar .cap-right { display: none; } /* hide caps on small screens to reduce clutter */
 }
