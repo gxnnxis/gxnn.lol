@@ -10,7 +10,7 @@
       padding: 0;
       box-sizing: border-box;
     }
-        <!-- SOCIAL / EMBED PREVIEW -->
+            <!-- SOCIAL / EMBED PREVIEW -->
 <meta property="og:title" content="gxnn.lol highlightz">
 <meta property="og:description" content="Explore the nn123 highlights">
 <meta property="og:type" content="website">
@@ -28,23 +28,23 @@
 
     .video-wrapper {
       position: relative;
-      width: 85vw;
-      max-width: 1400px;
-      padding: 10px;
-      border-radius: 20px;
+      width: 92vw;          /* 🔥 bigger video */
+      max-width: 1800px;    /* allows huge screens to go BIG */
+      padding: 12px;
+      border-radius: 22px;
       background: radial-gradient(circle at top left, #ff1b1b, #000000 55%);
       overflow: hidden;
       box-shadow:
-        0 0 35px rgba(255, 0, 0, 0.8),
-        0 0 80px rgba(0, 0, 0, 1);
+        0 0 45px rgba(255, 0, 0, 0.9),
+        0 0 100px rgba(0, 0, 0, 1);
     }
 
-    /* 🔥 MOVING LIGHT EFFECT (same style as /itemshop) */
+    /* 🔥 MOVING LIGHT EFFECT */
     .video-wrapper::after {
       content: "";
       position: absolute;
       inset: 0;
-      border-radius: 20px;
+      border-radius: 22px;
       background: linear-gradient(
         120deg,
         rgba(255, 40, 40, 0.25),
@@ -58,10 +58,10 @@
 
     @keyframes lightMove {
       0% {
-        transform: translateX(-20%) translateY(-10%);
+        transform: translateX(-25%) translateY(-12%);
       }
       100% {
-        transform: translateX(20%) translateY(10%);
+        transform: translateX(25%) translateY(12%);
       }
     }
 
@@ -69,18 +69,18 @@
     .video-wrapper::before {
       content: "";
       position: absolute;
-      inset: -12px;
-      border-radius: 26px;
+      inset: -14px;
+      border-radius: 28px;
       background: conic-gradient(from 180deg, #ff2a2a, #000000, #ff2a2a);
-      opacity: 0.4;
-      filter: blur(14px);
+      opacity: 0.45;
+      filter: blur(16px);
       z-index: -1;
     }
 
     video {
       width: 100%;
       height: auto;
-      border-radius: 14px;
+      border-radius: 16px;
       background: #000;
       display: block;
     }
@@ -88,11 +88,11 @@
     /* Mobile scaling */
     @media (max-width: 600px) {
       .video-wrapper {
-        width: 95vw;
-        padding: 6px;
+        width: 97vw;        /* nearly full screen on mobile */
+        padding: 8px;
       }
       video {
-        border-radius: 10px;
+        border-radius: 12px;
       }
     }
   </style>
