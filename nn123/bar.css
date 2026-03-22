@@ -1,33 +1,21 @@
-:root {
-  --duration: 3s;
-  --thickness: 4px;
-  --color: #ff1b1b;
-}
+/* bar.css */
 
-.lightbar {
+.bar {
   position: fixed;
   top: 50%;
-  left: 0;
-
-  width: 200vw;
-  height: var(--thickness);
-
-  background: var(--color);
-
+  left: -150vw;              /* start off-screen left */
+  width: 300vw;              /* extra wide so angle covers screen */
+  height: 80px;
+  background: #ff1b1b;
   transform: rotate(-45deg);
-  transform-origin: left center;
-
-  animation: sweep var(--duration) linear infinite;
-
-  pointer-events: none;
-  z-index: 9999;
+  animation: slideBar 3s linear forwards;
 }
 
-@keyframes sweep {
+@keyframes slideBar {
   from {
-    transform: rotate(-45deg) translateX(-100%);
+    transform: translateX(0) rotate(-45deg);
   }
   to {
-    transform: rotate(-45deg) translateX(100vw);
+    transform: translateX(200vw) rotate(-45deg);
   }
 }
