@@ -61,9 +61,9 @@ body {
 /* PFP */
 .pfp-wrapper {
     position: absolute;
-    top: calc(100% - 60px); /* dynamic placement */
+    top: calc(260px - 65px); /* banner height - half pfp height */
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
 }
 
 .pfp {
