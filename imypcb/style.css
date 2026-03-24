@@ -1,11 +1,9 @@
-/* ROOT THEME — monochrome */
+/* THEME */
 :root {
     --bg: #000;
     --card: #0d0d0d;
-    --accent: #fff;
-    --accent-soft: rgba(255, 255, 255, 0.15);
-    --accent-glow: rgba(255, 255, 255, 0.45);
     --text: #fff;
+    --accent: #fff;
 }
 
 /* RESET */
@@ -15,118 +13,116 @@
     box-sizing: border-box;
 }
 
-/* PAGE CENTERING */
+/* PAGE */
 body {
     background: var(--bg);
     color: var(--text);
     font-family: Inter, system-ui, sans-serif;
 
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     min-height: 100vh;
     padding: 20px;
-    text-align: center;
 }
 
 /* CARD */
 .card {
     width: 100%;
-    max-width: 520px;
+    max-width: 480px;
     background: var(--card);
     border-radius: 18px;
     overflow: hidden;
     position: relative;
-    padding-bottom: 40px;
+    padding-bottom: 30px;
 
-    border: 5px solid #fff;
+    border: 4px solid #fff;
     box-shadow:
-        0 0 25px rgba(255, 255, 255, 0.35),
-        0 0 60px rgba(255, 255, 255, 0.20),
-        0 0 90px rgba(255, 255, 255, 0.10);
+        0 0 25px rgba(255,255,255,0.25),
+        0 0 60px rgba(255,255,255,0.15);
 }
 
-/* BANNER CONTAINER */
-.banner {
-    position: relative;
-}
-
-/* BANNER IMAGE */
+/* BANNER */
 .banner img {
     width: 100%;
-    height: 260px;
+    height: 220px;
     object-fit: cover;
-    display: block;
     filter: grayscale(100%);
+    display: block;
 }
 
-/* PFP — 64px size */
+/* PFP — small + overlapping banner */
 .pfp-wrapper {
     position: absolute;
-    bottom: -32px; /* half of 64px */
+    top: 180px; /* sits near bottom of banner */
     left: 50%;
     transform: translateX(-50%);
 }
 
 .pfp {
-    width: 64px;
-    height: 64px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    border: 3px solid var(--accent);
+    border: 3px solid #fff;
     background: #000;
 
     box-shadow:
-        0 0 14px rgba(255,255,255,0.45),
-        0 0 24px rgba(255,255,255,0.25);
+        0 0 15px rgba(255,255,255,0.35),
+        0 0 30px rgba(255,255,255,0.2);
 }
 
-/* NAME TEXT */
+/* NAME */
 .name {
-    margin-top: 55px;
-    font-size: 38px;
+    margin-top: 50px;
+    font-size: 36px;
     font-weight: 900;
-    letter-spacing: 1px;
-    line-height: 1.1;
     color: var(--accent);
+    text-align: center;
 
     text-shadow:
-        0 0 18px rgba(255, 255, 255, 0.25),
-        0 0 30px rgba(255, 255, 255, 0.15);
+        0 0 18px rgba(255,255,255,0.25),
+        0 0 30px rgba(255,255,255,0.15);
 }
 
-/* INVITE BUTTON UNDER CARD */
-.invite-wrapper {
+/* STATUS */
+.status {
+    margin-top: 6px;
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+/* BUTTONS */
+.buttons {
     margin-top: 25px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px;
 }
 
-.invite-btn {
-    padding: 14px 28px;
+.btn {
+    padding: 12px;
     background: #111;
     border: 2px solid #fff;
-    border-radius: 12px;
+    border-radius: 10px;
     color: #fff;
-    font-size: 18px;
-    font-weight: 800;
     text-decoration: none;
+    font-weight: 700;
+    text-align: center;
     transition: 0.25s;
-
-    box-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
 }
 
-.invite-btn:hover {
+.btn:hover {
     background: #fff;
     color: #000;
-    transform: translateY(-4px);
-    box-shadow: 0 0 28px rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(255,255,255,0.4);
 }
 
 /* MOBILE */
 @media (max-width: 500px) {
+    .pfp { width: 60px; height: 60px; }
+    .pfp-wrapper { top: 170px; }
     .name { font-size: 30px; }
-    .pfp { width: 56px; height: 56px; }
-    .pfp-wrapper { bottom: -28px; }
 }
