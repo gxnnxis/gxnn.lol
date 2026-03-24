@@ -1,0 +1,94 @@
+
+/* bar.css — monochrome diagonal sweep */
+
+:root {
+    --bar-color: #ffffff; /* White core */
+    --bar-glow: rgba(255, 255, 255, 0.55); /* Strong white glow */
+    --bar-soft: rgba(255, 255, 255, 0.15); /* Soft ambient glow */
+    --bar-thickness: 10px;
+    --duration: 3s;
+}
+
+/* Main bar */
+.lightbar {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 200vw;
+    height: var(--bar-thickness);
+    pointer-events: none;
+    z-index: 0;
+
+    transform-origin: center;
+    transform: translate(-50%, -50%) rotate(45deg);
+
+    animation: sweep var(--duration) linear infinite;
+
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,1) 50%,
+        rgba(255,255,255,0) 100%
+    );
+
+    box-shadow:
+        0 0 20px var(--bar-soft),
+        0 0 40px var(--bar-glow);
+}
+
+/* Glow layer */
+.lightbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,1) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    filter: blur(22px);
+    opacity: 0.75;
+    pointer-events: none;
+}
+
+/* Sharp neon core */
+.lightbar::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: translateY(-50%);
+    background: var(--bar-color);
+    box-shadow:
+        0 0 10px var(--bar-color),
+        0 0 25px var(--bar-glow);
+}
+
+/* Animation */
+@keyframes sweep {
+    0% {
+        transform: translate(-50%, -50%) rotate(45deg) translateX(-120%);
+        opacity: 0.4;
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(45deg) translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(45deg) translateX(120%);
+        opacity: 0.4;
+    }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    :root {
+        --bar-thickness: 7px;
+    }
+    .lightbar::before {
+        filter: blur(14px);
+    }
+}
