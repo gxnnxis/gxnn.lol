@@ -17,10 +17,14 @@
     position: relative;
     padding-bottom: 40px;
 
-    /* Stronger, cleaner monochrome glow */
+    /* NEW: solid white border */
+    border: 5px solid #fff;
+
+    /* NEW: outward glow from the border */
     box-shadow:
-        0 0 25px var(--accent-soft),
-        0 0 60px rgba(255, 255, 255, 0.08);
+        0 0 25px rgba(255, 255, 255, 0.35),
+        0 0 60px rgba(255, 255, 255, 0.20),
+        0 0 90px rgba(255, 255, 255, 0.10);
 }
 
 /* BANNER */
