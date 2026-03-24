@@ -51,19 +51,19 @@ body {
 
 /* BANNER CONTAINER */
 .banner {
-    position: relative; /* allows PFP to anchor to it */
+    position: relative; /* PFP anchors to this */
 }
 
 /* BANNER IMAGE */
 .banner img {
     width: 100%;
-    height: 260px; /* taller so full banner fits */
+    height: 260px; /* adjust as needed */
     object-fit: cover;
     display: block;
     filter: grayscale(100%);
 }
 
-/* PFP — now positioned relative to the banner */
+/* PFP — anchored to bottom of banner */
 .pfp-wrapper {
     position: absolute;
     bottom: -65px; /* half of pfp height (130px / 2) */
@@ -95,16 +95,6 @@ body {
     text-shadow:
         0 0 18px rgba(255, 255, 255, 0.25),
         0 0 30px rgba(255, 255, 255, 0.15);
-}
-
-/* REMOVE STATUS */
-.status {
-    display: none;
-}
-
-/* REMOVE OLD BUTTONS */
-.buttons {
-    display: none;
 }
 
 /* INVITE BUTTON UNDER CARD */
