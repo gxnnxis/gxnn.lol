@@ -63,29 +63,29 @@ body {
     filter: grayscale(100%);
 }
 
-/* PFP — anchored to bottom of banner */
+/* PFP — smaller size + perfect alignment */
 .pfp-wrapper {
     position: absolute;
-    bottom: -65px; /* half of pfp height (130px / 2) */
+    bottom: -47px; /* half of 95px */
     left: 50%;
     transform: translateX(-50%);
 }
 
 .pfp {
-    width: 130px;
-    height: 130px;
+    width: 95px;
+    height: 95px;
     border-radius: 50%;
     border: 4px solid var(--accent);
     background: #000;
 
     box-shadow:
-        0 0 25px var(--accent-glow),
-        0 0 50px rgba(255, 255, 255, 0.25);
+        0 0 20px rgba(255,255,255,0.45),
+        0 0 35px rgba(255,255,255,0.25);
 }
 
 /* NAME TEXT */
 .name {
-    margin-top: 90px; /* spacing adjusted for new PFP position */
+    margin-top: 75px; /* adjusted for smaller PFP */
     font-size: 42px;
     font-weight: 900;
     letter-spacing: 1px;
@@ -128,6 +128,6 @@ body {
 /* MOBILE */
 @media (max-width: 500px) {
     .name { font-size: 32px; }
-    .pfp { width: 110px; height: 110px; }
-    .pfp-wrapper { bottom: -55px; }
+    .pfp { width: 80px; height: 80px; }
+    .pfp-wrapper { bottom: -40px; }
 }
