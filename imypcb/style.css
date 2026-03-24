@@ -49,19 +49,24 @@ body {
         0 0 90px rgba(255, 255, 255, 0.10);
 }
 
-/* BANNER */
+/* BANNER CONTAINER */
+.banner {
+    position: relative; /* allows PFP to anchor to it */
+}
+
+/* BANNER IMAGE */
 .banner img {
     width: 100%;
-    height: 260px;
+    height: 260px; /* taller so full banner fits */
     object-fit: cover;
     display: block;
     filter: grayscale(100%);
 }
 
-/* PFP */
+/* PFP — now positioned relative to the banner */
 .pfp-wrapper {
     position: absolute;
-    top: calc(260px - 65px); /* banner height - half pfp height */
+    bottom: -65px; /* half of pfp height (130px / 2) */
     left: 50%;
     transform: translateX(-50%);
 }
@@ -80,7 +85,7 @@ body {
 
 /* NAME TEXT */
 .name {
-    margin-top: 90px;
+    margin-top: 90px; /* spacing adjusted for new PFP position */
     font-size: 42px;
     font-weight: 900;
     letter-spacing: 1px;
@@ -90,6 +95,16 @@ body {
     text-shadow:
         0 0 18px rgba(255, 255, 255, 0.25),
         0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+/* REMOVE STATUS */
+.status {
+    display: none;
+}
+
+/* REMOVE OLD BUTTONS */
+.buttons {
+    display: none;
 }
 
 /* INVITE BUTTON UNDER CARD */
@@ -124,4 +139,5 @@ body {
 @media (max-width: 500px) {
     .name { font-size: 32px; }
     .pfp { width: 110px; height: 110px; }
+    .pfp-wrapper { bottom: -55px; }
 }
