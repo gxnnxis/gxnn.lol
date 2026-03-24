@@ -25,6 +25,9 @@ body {
 
     min-height: 100vh;
     padding: 20px;
+
+    /* Raise entire layout upward */
+    transform: translateY(-40px);
 }
 
 /* CARD */
@@ -52,10 +55,10 @@ body {
     display: block;
 }
 
-/* PFP — original size, aligned with the black bar */
+/* PFP — aligned with black bar */
 .pfp-wrapper {
     position: absolute;
-    top: 220px; /* aligns TOP of PFP with bottom of banner */
+    top: 220px; /* top of PFP sits on black bar */
     left: 50%;
     transform: translateX(-50%);
 }
@@ -72,9 +75,9 @@ body {
         0 0 40px rgba(255,255,255,0.2);
 }
 
-/* NAME */
+/* NAME — moved lower so it's fully below the PFP */
 .name {
-    margin-top: 70px; /* spacing adjusted for larger PFP */
+    margin-top: 95px; /* increased from 70px */
     font-size: 34px;
     font-weight: 900;
     color: var(--accent);
@@ -117,5 +120,5 @@ body {
 @media (max-width: 500px) {
     .pfp { width: 85px; height: 85px; }
     .pfp-wrapper { top: 215px; }
-    .name { font-size: 28px; }
+    .name { font-size: 28px; margin-top: 85px; }
 }
