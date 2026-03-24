@@ -52,10 +52,10 @@ body {
     display: block;
 }
 
-/* PFP — restored to original size */
+/* PFP — original size, aligned with the black bar */
 .pfp-wrapper {
     position: absolute;
-    top: 150px; /* adjusted for 100px size */
+    top: 220px; /* aligns TOP of PFP with bottom of banner */
     left: 50%;
     transform: translateX(-50%);
 }
@@ -74,7 +74,7 @@ body {
 
 /* NAME */
 .name {
-    margin-top: 65px; /* spacing adjusted for larger PFP */
+    margin-top: 70px; /* spacing adjusted for larger PFP */
     font-size: 34px;
     font-weight: 900;
     color: var(--accent);
@@ -116,6 +116,6 @@ body {
 /* MOBILE */
 @media (max-width: 500px) {
     .pfp { width: 85px; height: 85px; }
-    .pfp-wrapper { top: 155px; }
+    .pfp-wrapper { top: 215px; }
     .name { font-size: 28px; }
 }
