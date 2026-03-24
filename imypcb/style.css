@@ -61,9 +61,9 @@ body {
 /* PFP */
 .pfp-wrapper {
     position: absolute;
-    top: 120px;
+    top: calc(100% - 60px); /* dynamic placement */
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
 }
 
 .pfp {
