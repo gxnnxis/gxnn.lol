@@ -1,35 +1,86 @@
-
 :root {
     --bg: #000;
     --card: #0d0d0d;
-    --accent: #fff; /* White accent */
-    --accent-glow: rgba(255, 255, 255, 0.45); /* White glow */
+    --accent: #fff;
+    --accent-soft: rgba(255, 255, 255, 0.15);
+    --accent-glow: rgba(255, 255, 255, 0.45);
     --text: #fff;
 }
 
+/* CARD */
+.card {
+    width: 100%;
+    max-width: 520px;
+    background: var(--card);
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 40px;
+
+    /* Stronger, cleaner monochrome glow */
+    box-shadow:
+        0 0 25px var(--accent-soft),
+        0 0 60px rgba(255, 255, 255, 0.08);
+}
+
+/* BANNER */
+.banner img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+
+    /* Subtle grayscale for consistency */
+    filter: grayscale(100%);
+}
+
 /* PFP */
+.pfp-wrapper {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .pfp {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
     border: 4px solid var(--accent);
+    background: #000;
+
     box-shadow:
         0 0 25px var(--accent-glow),
         0 0 50px rgba(255, 255, 255, 0.25);
 }
 
-/* NAME */
+/* NAME — bold, centered, PROJECTX‑style */
 .name {
+    margin-top: 90px;
+    text-align: center;
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: 1px;
     color: var(--accent);
-    text-shadow: 0 0 18px rgba(255, 255, 255, 0.25);
+
+    text-shadow:
+        0 0 18px rgba(255, 255, 255, 0.25),
+        0 0 30px rgba(255, 255, 255, 0.15);
 }
 
-/* BUTTONS */
-.btn {
-    border: 2px solid var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
+/* STATUS — keep your system but make it cleaner */
+.status {
+    margin: 12px auto 0;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
 }
 
-.btn:hover {
-    background: var(--accent);
+.status.active {
+    background: #fff;
     color: #000;
-    box-shadow: 0 0 28px rgba(255, 255, 255, 0.4);
 }
