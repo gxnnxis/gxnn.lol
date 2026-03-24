@@ -1,0 +1,52 @@
+/* =============================== */
+/* Fortnite-style Red Laser Lightbar */
+/* =============================== */
+
+/* Ensure video wrapper has relative positioning */
+.video-wrapper {
+  position: relative; /* already in your CSS, required */
+  overflow: hidden;   /* clips the lightbar */
+}
+
+/* Lightbar container */
+.lightbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* doesn’t interfere with video controls */
+  z-index: 1;           /* behind video */
+  overflow: hidden;      /* clip the animated bar inside */
+}
+
+/* Actual animated bar */
+.lightbar::before {
+  content: "";
+  position: absolute;
+  width: 150%;        /* wide enough for diagonal sweep */
+  height: 4px;        /* laser thickness */
+  background: #ff1b1b;
+  box-shadow: 0 0 12px #ff1b1b, 0 0 24px rgba(255,27,27,0.5);
+  transform: rotate(45deg);
+  opacity: 0.8;
+  animation: moveLight 2s linear infinite;
+}
+
+/* Keyframes for diagonal motion inside the container */
+@keyframes moveLight {
+  0% {
+    transform: translate(-100%, -100%) rotate(45deg);
+  }
+  100% {
+    transform: translate(100%, 100%) rotate(45deg);
+  }
+}
+
+/* Optional: thicker glow on larger screens */
+@media (min-width: 600px) {
+  .lightbar::before {
+    height: 6px;
+    box-shadow: 0 0 18px #ff1b1b, 0 0 36px rgba(255,27,27,0.5);
+  }
+}
