@@ -1,43 +1,39 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- ONLY VIDEO EMBED META TAGS -->
-  <!-- Open Graph video embed -->
-  <meta property="og:video" content="https://tenor.com/view/glazing-gif-10976190243458985045" type="video/gif">
-  <meta property="og:video:type" content="text/html">
-  <meta property="og:video:width" content="640">
-  <meta property="og:video:height" content="360">
+  <!-- Social preview (image only, since Tenor doesn't provide real video URLs) -->
+  <meta property="og:title" content="gxnn.lol | yo chill with the glazing">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://media.tenor.com/10976190243458985045.gif">
 
-  <!-- Twitter player card -->
-  <meta name="twitter:card" content="player">
-  <meta name="twitter:player" content="https://tenor.com/view/glazing-gif-10976190243458985045" type="video/gif">
-  <meta name="twitter:player:width" content="640">
-  <meta name="twitter:player:height" content="360">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="gxnn.lol | yo chill with the glazing">
+  <meta name="twitter:image" content="https://media.tenor.com/10976190243458985045.gif">
 
-  <title>gxnn.lol | nn123 highlights</title>
+  <title>gxnn.lol | yo chill with the glazing</title>
 
-  <!-- Layout + video styling -->
+  <!-- Layout + styling -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Animated lightbar -->
   <link rel="stylesheet" href="bar.css">
 </head>
 
 <body>
 
-  <!-- Ambient lightbar (behind video) -->
+  <!-- Ambient lightbar -->
   <div class="lightbar" aria-hidden="true"></div>
 
-  <!-- Video container -->
+  <!-- GIF container -->
   <div class="video-wrapper">
-    <video controls autoplay muted loop>
-      <source src="https://tenor.com/view/glazing-gif-10976190243458985045" type="video/gif">
-      Your browser does not support the video tag.
-    </video>
+    <div class="tenor-gif-embed"
+         data-postid="10976190243458985045"
+         data-share-method="host"
+         data-width="100%"
+         data-aspect-ratio="1.777">
+    </div>
+    <script async src="https://tenor.com/embed.js"></script>
   </div>
 
 </body>
