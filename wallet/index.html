@@ -5,218 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>gxnn.lol | Wallet</title>
 
-        <!-- SOCIAL / EMBED PREVIEW -->
-<meta property="og:title" content="gxnn.lol wallet">
-<meta property="og:description" content="Explore the gxnn wallet">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://gxnn.lol/wallet">
-<meta property="og:image" content="https://gxnn.lol/logo.png">
+<link rel="stylesheet" href="style.css">
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Inter, sans-serif;
-}
-
-body {
-    background: #0d1117;
-    color: #e6edf3;
-    display: flex;
-    height: 100vh;
-}
-
-/* SIDEBAR */
-.sidebar {
-    width: 230px;
-    background: #161b22;
-    border-right: 1px solid #30363d;
-    padding: 20px 0;
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar h2 {
-    font-size: 18px;
-    font-weight: 700;
-    padding: 0 20px 20px;
-    color: #58a6ff;
-}
-
-.nav-item {
-    padding: 12px 20px;
-    font-size: 15px;
-    color: #c9d1d9;
-    cursor: pointer;
-}
-
-.nav-item.active {
-    background: #1f6feb33;
-    border-left: 3px solid #1f6feb;
-}
-
-.nav-item:hover {
-    background: #1f6feb22;
-}
-
-/* ACTION BUTTONS */
-.action-buttons {
-    margin-top: 20px;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.action-btn {
-    background: #21262d;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid #30363d;
-}
-
-.action-btn:hover {
-    background: #30363d;
-}
-
-/* MAIN AREA */
-.main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-/* TOP BAR */
-.topbar {
-    height: 60px;
-    border-bottom: 1px solid #30363d;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 25px;
-}
-
-.search {
-    background: #21262d;
-    border: 1px solid #30363d;
-    padding: 8px 12px;
-    border-radius: 8px;
-    width: 260px;
-    color: #e6edf3;
-}
-
-.top-icons {
-    display: flex;
-    gap: 15px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-/* CONTENT */
-.content {
-    padding: 25px;
-    overflow-y: auto;
-}
-
-/* BALANCE HEADER */
-.balance-box {
-    margin-bottom: 25px;
-}
-
-.balance-title {
-    font-size: 14px;
-    opacity: 0.7;
-}
-
-.balance-value {
-    font-size: 40px;
-    font-weight: 700;
-    margin-top: 5px;
-}
-
-/* TABS */
-.tabs {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.tab {
-    font-size: 16px;
-    padding-bottom: 8px;
-    cursor: pointer;
-    opacity: 0.6;
-}
-
-.tab.active {
-    border-bottom: 2px solid #1f6feb;
-    opacity: 1;
-}
-
-/* TABLE */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-th, td {
-    padding: 12px;
-    border-bottom: 1px solid #30363d;
-    text-align: left;
-}
-
-th {
-    color: #8b949e;
-    font-size: 13px;
-    text-transform: uppercase;
-}
-
-.value {
-    font-weight: 600;
-    color: #58a6ff;
-}
-
-.graph-cell {
-    width: 120px;
-    height: 40px;
-}
-
-canvas {
-    width: 100% !important;
-    height: 40px !important;
-}
-
-/* TRANSACTION HISTORY */
-.history {
-    margin-top: 40px;
-}
-
-.history h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #58a6ff;
-}
-
-.history-item {
-    padding: 12px;
-    border-bottom: 1px solid #30363d;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-}
-</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
     <h2>gxnn.lol</h2>
-
     <div class="nav-item active">Assets</div>
     <div class="nav-item">Home</div>
     <div class="nav-item">Apps</div>
@@ -229,38 +26,19 @@ canvas {
     </div>
 </div>
 
-<!-- MAIN AREA -->
 <div class="main">
-
-    <!-- TOP BAR -->
     <div class="topbar">
-        <input class="search" placeholder="Search coins, apps...">
-        <div class="top-icons">
-            <span>⚙️</span>
-            <span>👤</span>
-        </div>
+        <input class="search" placeholder="Search coins...">
     </div>
 
-    <!-- CONTENT -->
     <div class="content">
-
-        <!-- BALANCE -->
         <div class="balance-box">
             <div class="balance-title">Balance</div>
             <div class="balance-value" id="totalValue">$0.00</div>
         </div>
 
-        <!-- TABS -->
-        <div class="tabs">
-            <div class="tab active">Crypto</div>
-            <div class="tab">DeFi</div>
-            <div class="tab">Transactions</div>
-        </div>
-
-        <!-- PORTFOLIO CHART -->
         <canvas id="portfolioChart" height="80"></canvas>
 
-        <!-- ASSET TABLE -->
         <table>
             <thead>
                 <tr>
@@ -272,134 +50,9 @@ canvas {
             </thead>
             <tbody id="cryptoTable"></tbody>
         </table>
-
-        <!-- HISTORY -->
-        <div class="history">
-            <h2>Recent Activity</h2>
-
-            <div class="history-item">
-                <span>Received 2.1 ETH</span>
-                <span>Mar 12</span>
-            </div>
-
-            <div class="history-item">
-                <span>Sent 0.3 BTC</span>
-                <span>Mar 10</span>
-            </div>
-
-            <div class="history-item">
-                <span>Received 500 SOL</span>
-                <span>Mar 7</span>
-            </div>
-        </div>
-
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-/* Hard‑coded balances */
-const balances = {
-    BTC: 14.2,
-    ETH: 220,
-    SOL: 8500,
-    BNB: 600,
-    XRP: 90000
-};
-
-/* Fake prices */
-const prices = {
-    BTC: 68000,
-    ETH: 3500,
-    SOL: 150,
-    BNB: 420,
-    XRP: 0.62
-};
-
-/* STATIC 7‑DAY TREND DATA */
-const trends = {
-    BTC: [82, 85, 88, 90, 87, 92, 95],
-    ETH: [60, 62, 61, 65, 67, 70, 72],
-    SOL: [40, 42, 45, 47, 50, 52, 55],
-    BNB: [30, 31, 33, 34, 36, 38, 40],
-    XRP: [10, 11, 12, 12, 13, 14, 15]
-};
-
-/* Build table */
-const table = document.getElementById("cryptoTable");
-
-Object.keys(balances).forEach(symbol => {
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-        <td>${symbol}</td>
-        <td>${balances[symbol].toLocaleString()}</td>
-        <td class="value" id="value-${symbol}">$0.00</td>
-        <td class="graph-cell"><canvas id="graph-${symbol}"></canvas></td>
-    `;
-
-    table.appendChild(row);
-
-    new Chart(document.getElementById(`graph-${symbol}`), {
-        type: "line",
-        data: {
-            labels: ["", "", "", "", "", "", ""],
-            datasets: [{
-                data: trends[symbol],
-                borderColor: "#58a6ff",
-                borderWidth: 2,
-                fill: false,
-                tension: 0.3
-            }]
-        },
-        options: {
-            plugins: { legend: { display: false } },
-            scales: { x: { display: false }, y: { display: false } }
-        }
-    });
-});
-
-/* Update totals */
-function updateValues() {
-    let total = 0;
-
-    Object.keys(balances).forEach(symbol => {
-        const amount = balances[symbol];
-        const usdValue = amount * prices[symbol];
-
-        document.getElementById(`value-${symbol}`).textContent =
-            "$" + usdValue.toLocaleString(undefined, { minimumFractionDigits: 2 });
-
-        total += usdValue;
-    });
-
-    document.getElementById("totalValue").textContent =
-        "$" + total.toLocaleString(undefined, { minimumFractionDigits: 2 });
-}
-
-updateValues();
-
-/* Portfolio chart */
-new Chart(document.getElementById("portfolioChart"), {
-    type: "line",
-    data: {
-        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        datasets: [{
-            label: "Portfolio Value",
-            data: [120000, 123000, 125500, 128000, 130000, 135000, 142841],
-            borderColor: "#1f6feb",
-            backgroundColor: "#1f6feb33",
-            fill: true,
-            tension: 0.3
-        }]
-    },
-    options: {
-        plugins: { legend: { display: false } },
-        scales: { x: { display: true }, y: { display: true } }
-    }
-});
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>
