@@ -1,5 +1,5 @@
 // ==========================
-// REALISTIC USER BALANCES
+// BALANCES (REALISTIC)
 // ==========================
 const balances = {
     BTC: 0.42,
@@ -9,7 +9,9 @@ const balances = {
     XRP: 1500
 };
 
-// Map symbols → CoinGecko IDs
+// ==========================
+// SYMBOL → API MAP
+// ==========================
 const symbolToId = {
     BTC: "bitcoin",
     ETH: "ethereum",
@@ -19,26 +21,6 @@ const symbolToId = {
 };
 
 let prices = {};
-
-// ==========================
-// BUILD TABLE
-// ==========================
-const table = document.getElementById("cryptoTable");
-
-Object.keys(balances).forEach(symbol => {
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-        <td>
-            <strong>${symbol}</strong><br>
-            <span style="color:#6b7280;font-size:12px">${symbol}</span>
-        </td>
-        <td>${balances[symbol].toLocaleString()}</td>
-        <td class="value" id="value-${symbol}">$0.00</td>
-    `;
-
-    table.appendChild(row);
-});
 
 // ==========================
 // FETCH REAL PRICES
@@ -54,53 +36,75 @@ async function fetchPrices() {
         const data = await res.json();
 
         Object.keys(symbolToId).forEach(symbol => {
-            const id = symbolToId[symbol];
-            prices[symbol] = data[id]?.usd || 0;
+            prices[symbol] = data[symbolToId[symbol]]?.usd || 0;
         });
 
-        updateValues();
+        updateUI();
     } catch (err) {
-        console.error("Price fetch failed:", err);
+        console.error("Error fetching prices:", err);
     }
 }
 
 // ==========================
-// UPDATE UI VALUES
+// UPDATE TOP CARDS
 // ==========================
-function updateValues() {
-    let total = 0;
+function updateTopCards() {
+    const map = {
+        BTC: "btcPrice",
+        ETH: "ethPrice",
+        SOL: "solPrice"
+    };
+
+    Object.keys(map).forEach(symbol => {
+        const el = document.getElementById(map[symbol]);
+        if (!el) return;
+
+        const price = prices[symbol] || 0;
+
+        el.textContent =
+            "$" + price.toLocaleString(undefined, {
+                maximumFractionDigits: 2
+            });
+    });
+}
+
+// ==========================
+// RENDER PORTFOLIO LIST
+// ==========================
+const portfolioEl = document.getElementById("cryptoTable");
+
+function renderPortfolio() {
+    if (!portfolioEl) return;
+
+    portfolioEl.innerHTML = "";
 
     Object.keys(balances).forEach(symbol => {
         const amount = balances[symbol];
         const price = prices[symbol] || 0;
+        const value = amount * price;
 
-        const usdValue = amount * price;
+        const row = document.createElement("div");
 
-        const cell = document.getElementById(`value-${symbol}`);
-        if (cell) {
-            cell.textContent =
-                "$" + usdValue.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-        }
+        row.innerHTML = `
+            <span>${symbol}</span>
+            <span>$${value.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</span>
+        `;
 
-        total += usdValue;
+        portfolioEl.appendChild(row);
     });
-
-    document.getElementById("totalValue").textContent =
-        "$" + total.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
 }
 
 // ==========================
-// PORTFOLIO CHART (REALISTIC SIMULATION)
+// PORTFOLIO CHART
 // ==========================
-function generatePortfolioHistory(baseValue) {
+let portfolioChart;
+
+function generateHistory(total) {
     const data = [];
-    let value = baseValue * 0.9;
+    let value = total * 0.9;
 
     for (let i = 0; i < 7; i++) {
         const change = (Math.random() - 0.4) * 0.05;
@@ -111,17 +115,14 @@ function generatePortfolioHistory(baseValue) {
     return data;
 }
 
-let portfolioChart;
-
-function updatePortfolioChart(totalValue) {
+function updateChart(total) {
     const ctx = document.getElementById("portfolioChart");
-
     if (!ctx) return;
 
-    const history = generatePortfolioHistory(totalValue);
+    const data = generateHistory(total);
 
     if (portfolioChart) {
-        portfolioChart.data.datasets[0].data = history;
+        portfolioChart.data.datasets[0].data = data;
         portfolioChart.update();
         return;
     }
@@ -131,9 +132,9 @@ function updatePortfolioChart(totalValue) {
         data: {
             labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
             datasets: [{
-                data: history,
-                borderColor: "#1652f0",
-                backgroundColor: "rgba(22,82,240,0.1)",
+                data: data,
+                borderColor: "#3b82f6",
+                backgroundColor: "rgba(59,130,246,0.1)",
                 fill: true,
                 tension: 0.4
             }]
@@ -149,40 +150,63 @@ function updatePortfolioChart(totalValue) {
 }
 
 // ==========================
-// EXTEND updateValues TO UPDATE CHART
+// MINI CHARTS (TOP CARDS)
 // ==========================
-const originalUpdateValues = updateValues;
+function createMiniChart(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
 
-updateValues = function () {
+    new Chart(el, {
+        type: "line",
+        data: {
+            labels: ["", "", "", "", "", "", ""],
+            datasets: [{
+                data: Array.from({ length: 7 }, () => Math.random() * 100),
+                borderColor: "#22c55e",
+                borderWidth: 2,
+                fill: false,
+                tension: 0.3
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { display: false },
+                y: { display: false }
+            }
+        }
+    });
+}
+
+// Create charts
+createMiniChart("btcChart");
+createMiniChart("ethChart");
+createMiniChart("solChart");
+
+// ==========================
+// MAIN UI UPDATE
+// ==========================
+function updateUI() {
     let total = 0;
 
     Object.keys(balances).forEach(symbol => {
-        const amount = balances[symbol];
-        const price = prices[symbol] || 0;
-        const usdValue = amount * price;
-
-        const cell = document.getElementById(`value-${symbol}`);
-        if (cell) {
-            cell.textContent =
-                "$" + usdValue.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-        }
-
-        total += usdValue;
+        total += balances[symbol] * (prices[symbol] || 0);
     });
 
-    const totalFormatted =
-        "$" + total.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
+    // Total balance
+    const totalEl = document.getElementById("totalValue");
+    if (totalEl) {
+        totalEl.textContent =
+            "$" + total.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+    }
 
-    document.getElementById("totalValue").textContent = totalFormatted;
-
-    updatePortfolioChart(total);
-};
+    updateTopCards();
+    renderPortfolio();
+    updateChart(total);
+}
 
 // ==========================
 // INIT
