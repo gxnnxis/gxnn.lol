@@ -3,54 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>gxnn.lol | Wallet</title>
+<title>Wallet</title>
 
 <link rel="stylesheet" href="style.css">
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<div class="sidebar">
-    <h2>gxnn.lol</h2>
-    <div class="nav-item active">Assets</div>
-    <div class="nav-item">Home</div>
-    <div class="nav-item">Apps</div>
+<div class="layout">
 
-    <div class="action-buttons">
-        <div class="action-btn">Buy</div>
-        <div class="action-btn">Swap</div>
-        <div class="action-btn">Send</div>
-        <div class="action-btn">Receive</div>
-    </div>
-</div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2 class="logo">gxnn</h2>
 
-<div class="main">
-    <div class="topbar">
-        <input class="search" placeholder="Search coins...">
-    </div>
+        <nav>
+            <div class="nav-item active">Assets</div>
+            <div class="nav-item">Trade</div>
+            <div class="nav-item">Earn</div>
+        </nav>
+    </aside>
 
-    <div class="content">
-        <div class="balance-box">
-            <div class="balance-title">Balance</div>
-            <div class="balance-value" id="totalValue">$0.00</div>
-        </div>
+    <!-- MAIN -->
+    <main class="main">
 
-        <canvas id="portfolioChart" height="80"></canvas>
+        <!-- HEADER -->
+        <header class="header">
+            <input class="search" placeholder="Search assets">
+            <div class="profile">👤</div>
+        </header>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Crypto</th>
-                    <th>Balance</th>
-                    <th>USD Value</th>
-                    <th>7d Trend</th>
-                </tr>
-            </thead>
-            <tbody id="cryptoTable"></tbody>
-        </table>
-    </div>
+        <!-- BALANCE CARD -->
+        <section class="card balance-card">
+            <div class="label">Total balance</div>
+            <div class="balance" id="totalValue">$0.00</div>
+            <canvas id="portfolioChart"></canvas>
+        </section>
+
+        <!-- ASSETS TABLE -->
+        <section class="card">
+            <h3>Your assets</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Holdings</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody id="cryptoTable"></tbody>
+            </table>
+        </section>
+
+    </main>
+
 </div>
 
 <script src="app.js"></script>
