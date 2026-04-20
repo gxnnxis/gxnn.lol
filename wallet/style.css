@@ -1,46 +1,100 @@
-body {
-    background: #0d1117;
-    color: #e6edf3;
-    display: flex;
-    height: 100vh;
+* {
+    box-sizing: border-box;
     font-family: Inter, sans-serif;
 }
 
+body {
+    margin: 0;
+    background: #f7f9fc;
+    color: #0a0b0d;
+}
+
+/* LAYOUT */
+.layout {
+    display: flex;
+}
+
+/* SIDEBAR */
 .sidebar {
-    width: 230px;
-    background: #161b22;
-    padding: 20px 0;
+    width: 220px;
+    background: white;
+    border-right: 1px solid #e6e8eb;
+    padding: 20px;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 30px;
 }
 
 .nav-item {
-    padding: 12px 20px;
+    padding: 10px;
+    border-radius: 8px;
     cursor: pointer;
+    margin-bottom: 5px;
 }
 
+.nav-item.active {
+    background: #eef2ff;
+    color: #1652f0;
+    font-weight: 600;
+}
+
+/* MAIN */
 .main {
     flex: 1;
+    padding: 20px 40px;
 }
 
-.content {
-    padding: 25px;
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-.balance-value {
-    font-size: 40px;
-    font-weight: bold;
+.search {
+    width: 250px;
+    padding: 10px;
+    border: 1px solid #e6e8eb;
+    border-radius: 8px;
 }
 
+/* CARD */
+.card {
+    background: white;
+    border: 1px solid #e6e8eb;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* BALANCE */
+.balance {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+/* TABLE */
 table {
     width: 100%;
-    margin-top: 20px;
     border-collapse: collapse;
 }
 
-td, th {
-    padding: 10px;
-    border-bottom: 1px solid #30363d;
+th {
+    text-align: left;
+    font-size: 12px;
+    color: #6b7280;
+    padding-bottom: 10px;
+}
+
+td {
+    padding: 14px 0;
+    border-top: 1px solid #f0f2f5;
 }
 
 .value {
-    color: #58a6ff;
+    font-weight: 600;
 }
