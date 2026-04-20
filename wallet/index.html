@@ -1,65 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wallet</title>
+<div class="main">
 
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <input class="search" placeholder="Search anything...">
+        <div class="profile">👤 Alex</div>
+    </div>
 
-<body>
+    <!-- ASSET CARDS -->
+    <div class="cards">
+        <div class="asset-card">
+            <div>Bitcoin</div>
+            <div class="price" id="btcPrice">$0</div>
+            <canvas id="btcChart"></canvas>
+        </div>
 
-<div class="layout">
+        <div class="asset-card">
+            <div>Ethereum</div>
+            <div class="price" id="ethPrice">$0</div>
+            <canvas id="ethChart"></canvas>
+        </div>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <h2 class="logo">gxnn</h2>
+        <div class="asset-card">
+            <div>Solana</div>
+            <div class="price" id="solPrice">$0</div>
+            <canvas id="solChart"></canvas>
+        </div>
 
-        <nav>
-            <div class="nav-item active">Assets</div>
-            <div class="nav-item">Trade</div>
-            <div class="nav-item">Earn</div>
-        </nav>
-    </aside>
+        <div class="asset-card add-card">
+            <div>+ Add Asset</div>
+        </div>
+    </div>
 
-    <!-- MAIN -->
-    <main class="main">
+    <!-- GRID -->
+    <div class="grid">
 
-        <!-- HEADER -->
-        <header class="header">
-            <input class="search" placeholder="Search assets">
-            <div class="profile">👤</div>
-        </header>
+        <!-- CARD (BALANCE) -->
+        <div class="card blue-card">
+            <div class="label">Balance</div>
+            <div class="big-balance" id="totalValue">$0.00</div>
+        </div>
 
-        <!-- BALANCE CARD -->
-        <section class="card balance-card">
-            <div class="label">Total balance</div>
-            <div class="balance" id="totalValue">$0.00</div>
+        <!-- PORTFOLIO CHART -->
+        <div class="card">
+            <div class="card-title">Chart</div>
             <canvas id="portfolioChart"></canvas>
-        </section>
+        </div>
 
-        <!-- ASSETS TABLE -->
-        <section class="card">
-            <h3>Your assets</h3>
+        <!-- PORTFOLIO LIST -->
+        <div class="card">
+            <div class="card-title">My Portfolio</div>
+            <div id="cryptoTable"></div>
+        </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Asset</th>
-                        <th>Holdings</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody id="cryptoTable"></tbody>
-            </table>
-        </section>
-
-    </main>
-
+    </div>
 </div>
-
-<script src="app.js"></script>
-</body>
-</html>
